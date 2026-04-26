@@ -38,8 +38,8 @@ Route::get('/organizer/{slug}', [PublicController::class, 'showOrganizerProfile'
 
 
 
-// Halaman Keranjang
-Route::prefix('cart')->group(function () {
+// Halaman Keranjang (rate limited: 30 request/menit per user)
+Route::prefix('cart')->middleware('throttle:30,1')->group(function () {
     Route::get('/data', [App\Http\Controllers\CartController::class, 'getData'])->name('cart.data');
     Route::post('/add', [App\Http\Controllers\CartController::class, 'add'])->name('cart.add');
     Route::post('/update', [App\Http\Controllers\CartController::class, 'update'])->name('cart.update');
@@ -49,10 +49,9 @@ Route::prefix('cart')->group(function () {
 
 Route::get('/cart', [PublicController::class, 'showCart'])->name('public.cart.show');
 
-// Proses Checkout
-// Proses Checkout
+// Proses Checkout (rate limited: 5 request/menit per user - mencegah bot)
 Route::get('/checkout', [PublicController::class, 'showCheckoutForm'])->name('public.checkout');
-Route::post('/checkout', [PublicController::class, 'processCheckout'])->name('public.checkout.process');
+Route::post('/checkout', [PublicController::class, 'processCheckout'])->middleware('throttle:5,1')->name('public.checkout.process');
 Route::post('/checkout/check-email', [PublicController::class, 'checkEmail'])->name('public.checkout.check_email');
 
 // Halaman Invoice (Setelah Transaksi Selesai)

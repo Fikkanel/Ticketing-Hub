@@ -467,16 +467,16 @@ class PublicController extends Controller
                 }
             }
             
-            // Fetch Products
+            // Fetch Products WITH LOCK to prevent race condition (overselling)
             $productsDb = collect();
             if (!empty($regularProductIds)) {
-                $productsDb = Product::with('event')->whereIn('product_id', $regularProductIds)->get()->keyBy('product_id');
+                $productsDb = Product::with('event')->whereIn('product_id', $regularProductIds)->lockForUpdate()->get()->keyBy('product_id');
             }
             
-            // Fetch Bundles
+            // Fetch Bundles WITH LOCK to prevent race condition (overselling)
             $bundlesDb = collect();
             if (!empty($bundleIds)) {
-                $bundlesDb = Bundle::with('event', 'items.product')->whereIn('id', $bundleIds)->get()->keyBy('id');
+                $bundlesDb = Bundle::with('event', 'items.product')->whereIn('id', $bundleIds)->lockForUpdate()->get()->keyBy('id');
             }
 
             // =============================================
@@ -558,10 +558,10 @@ class PublicController extends Controller
                         return back()->with('error', 'Stok bundle ' . $bundle->name . ' tidak mencukupi.');
                     }
                     
-                    // IMPORTANT: Validate stock for ALL individual products in bundle first
+                    // IMPORTANT: Validate stock for ALL individual products in bundle first (WITH LOCK)
                     foreach ($bundle->items as $bundleItem) {
                         $requiredQty = $bundleItem->quantity * $qty;
-                        $product = Product::where('product_id', $bundleItem->product_id)->first();
+                        $product = Product::where('product_id', $bundleItem->product_id)->lockForUpdate()->first();
                         
                         if (!$product || $product->stok < $requiredQty) {
                             DB::rollBack();
@@ -622,6 +622,22 @@ class PublicController extends Controller
                         return back()->with('error', 'Stok produk ' . $product->nama_produk . ' tidak mencukupi.');
                     }
                     
+                    // VALIDASI ULANG KURSI saat checkout (mencegah double booking)
+                    $seatIds = $item['seat_ids'] ?? [];
+                    if (!empty($seatIds)) {
+                        $seats = \App\Models\Seat::whereIn('id', $seatIds)->lockForUpdate()->get();
+                        foreach ($seats as $seat) {
+                            if ($seat->isBooked()) {
+                                DB::rollBack();
+                                $errorMsg = 'Maaf, kursi ' . $seat->seat_number . ' sudah dipesan oleh orang lain. Silakan pilih kursi lain.';
+                                if ($request->wantsJson()) {
+                                    return response()->json(['success' => false, 'message' => $errorMsg], 409);
+                                }
+                                return back()->with('error', $errorMsg);
+                            }
+                        }
+                    }
+                    
                     $totalHargaProduk += $product->harga * $qty;
                     
                     $orderItemsData[] = [
@@ -629,7 +645,7 @@ class PublicController extends Controller
                         'kuantitas' => $qty,
                         'subtotal' => $product->harga * $qty,
                         'nik_data' => $request->input('nik') ? json_encode(['buyer_nik' => $request->input('nik')]) : null,
-                        'seat_ids' => $item['seat_ids'] ?? [],
+                        'seat_ids' => $seatIds,
                     ];
                 }
             }
@@ -1018,13 +1034,18 @@ class PublicController extends Controller
         $order = Order::with(['orderItems.product', 'customer'])
                       ->findOrFail($order_id);
 
+        // PROTEKSI: Hanya pemilik order yang boleh melihat invoice
+        $customer = Auth::guard('customer')->user();
+        if (!$customer || $customer->id !== $order->customer_id) {
+            abort(403, 'Anda tidak memiliki akses ke invoice ini.');
+        }
+
         $adminWhatsapp = \App\Models\Setting::where('key', 'admin_whatsapp')->value('value');
 
         $snapToken = null;
         if ($order->status === 'Pending' && $order->midtrans_snap_token) {
             $snapToken = $order->midtrans_snap_token;
         }
-
 
         return view('public.invoice', compact('order', 'adminWhatsapp', 'snapToken'));
     }
