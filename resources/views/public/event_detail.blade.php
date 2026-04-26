@@ -383,6 +383,32 @@
         .stage.right.convex { border-radius: 50% 0 0 50% / 20px 0 0 20px; }
         .stage.right.concave { border-radius: 0 50% 50% 0 / 0 20px 20px 0; }
 
+        /* Stage base styling (shared with admin) */
+        .stage {
+            background-color: #343a40;
+            color: white;
+            text-align: center;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 4px;
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .stage.top { top: 0; left: 20px; right: 20px; height: 30px; }
+        .stage.bottom { bottom: 0; left: 20px; right: 20px; height: 30px; }
+        .stage.left { left: 0; top: 20px; bottom: 20px; width: 30px; writing-mode: vertical-rl; text-orientation: mixed; }
+        .stage.right { right: 0; top: 20px; bottom: 20px; width: 30px; writing-mode: vertical-rl; text-orientation: mixed; }
+
+        /* Seat orientation based on stage */
+        .facing-top { border-radius: 4px 4px 12px 12px; border-top: 4px solid #0a58ca; }
+        .facing-bottom { border-radius: 12px 12px 4px 4px; border-bottom: 4px solid #0a58ca; }
+        .facing-left { border-radius: 4px 12px 12px 4px; border-left: 4px solid #0a58ca; }
+        .facing-right { border-radius: 12px 4px 4px 12px; border-right: 4px solid #0a58ca; }
+
         /* Public Seat Styles */
         .public-seat-grid {
             display: grid;
@@ -423,6 +449,14 @@
             cursor: not-allowed;
             box-shadow: none;
             opacity: 0.7;
+        }
+        /* Inactive/gap seats — invisible but still occupy grid space */
+        .public-seat-cell.inactive {
+            background-color: transparent;
+            box-shadow: none;
+            border: none !important;
+            cursor: default;
+            pointer-events: none;
         }
     </style>
     
@@ -773,8 +807,9 @@ document.addEventListener('DOMContentLoaded', function() {
             for (let c = 0; c < columns; c++) {
                 const seatData = seatsMap[`${r}-${c}`];
                 if (!seatData || !seatData.is_active) {
-                    // Empty space
+                    // Inactive/gap seat — render as invisible placeholder to preserve grid spacing
                     const empty = document.createElement('div');
+                    empty.className = 'public-seat-cell inactive';
                     grid.appendChild(empty);
                     continue;
                 }
