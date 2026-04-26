@@ -1,0 +1,35 @@
+name: Deploy TixKita to VPS
+
+on:
+  push:
+    branches:
+      - main # Akan berjalan saat ada push ke branch main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Deploy to VPS via SSH
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USERNAME }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        port: 22 
+        script: |
+          # Pindah ke folder proyek tixkita di VPS Anda
+          cd /var/www/tixkita
+          
+          # Tarik kode terbaru dari GitHub ke VPS
+          git pull origin main
+          
+          # Jika Anda butuh menjalankan composer atau optimize setelah update:
+          # (Hapus tanda pagar di bawah jika diperlukan)
+          # composer install --optimize-autoloader --no-dev
+          # php artisan config:cache
+          # php artisan route:cache
+          # php artisan view:cache
