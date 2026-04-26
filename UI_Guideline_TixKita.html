@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UI Guideline - TixKita</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',sans-serif; color:#333; background:#fff; line-height:1.7; }
+        .page { max-width:900px; margin:0 auto; padding:2rem 2.5rem; }
+        .page-break { page-break-after:always; }
+        h1 { font-size:1.8rem; color:#3a7d44; margin-bottom:1.5rem; border-bottom:3px solid #3a7d44; padding-bottom:0.5rem; }
+        h2 { font-size:1.3rem; color:#2e6636; margin:1.5rem 0 0.75rem; }
+        h3 { font-size:1.05rem; color:#3a7d44; margin:1rem 0 0.5rem; }
+        p, li { font-size:0.95rem; margin-bottom:0.5rem; }
+        table { width:100%; border-collapse:collapse; margin:1rem 0 1.5rem; font-size:0.9rem; }
+        th { background:#3a7d44; color:white; padding:0.7rem 1rem; text-align:left; font-weight:600; }
+        td { padding:0.6rem 1rem; border-bottom:1px solid #e5e7eb; }
+        tr:nth-child(even) { background:#f0f9f2; }
+        .hero { background:linear-gradient(135deg,#3a7d44,#2e6636); color:white; padding:3rem 2.5rem; border-radius:20px; text-align:center; margin-bottom:2rem; }
+        .hero h1 { color:white; border:none; font-size:2.5rem; }
+        .hero p { color:rgba(255,255,255,0.85); font-size:1.1rem; }
+        .hero .version { display:inline-block; background:rgba(255,255,255,0.15); padding:0.4rem 1.2rem; border-radius:50px; margin-top:1rem; font-size:0.9rem; }
+        .color-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:1rem; margin:1rem 0 1.5rem; }
+        .color-swatch { border-radius:12px; overflow:hidden; border:1px solid #e5e7eb; }
+        .color-swatch .preview { height:70px; }
+        .color-swatch .info { padding:0.5rem 0.7rem; background:white; }
+        .color-swatch .info .name { font-weight:600; font-size:0.85rem; }
+        .color-swatch .info .hex { font-size:0.8rem; color:#6b7280; font-family:monospace; }
+        .component-box { background:#f8f9fa; border:1px solid #e9ecef; border-radius:14px; padding:1.5rem; margin:1rem 0; }
+        .btn-demo { display:inline-flex; align-items:center; gap:0.5rem; padding:0.5rem 1.25rem; border-radius:8px; font-weight:600; font-size:0.9rem; border:none; cursor:pointer; font-family:'Inter'; margin:0.3rem; text-decoration:none; }
+        .btn-primary-demo { background:#3a7d44; color:white; }
+        .btn-secondary-demo { background:#2e6636; color:white; }
+        .btn-outline-demo { background:transparent; color:#3a7d44; border:2px solid #3a7d44; }
+        .btn-danger-demo { background:#dc3545; color:white; }
+        .btn-warning-demo { background:#ffc107; color:#333; }
+        .btn-sm-demo { padding:0.3rem 0.8rem; font-size:0.8rem; }
+        .do-dont { display:grid; grid-template-columns:1fr 1fr; gap:1.5rem; margin:1rem 0; }
+        .do-box, .dont-box { padding:1.25rem; border-radius:14px; }
+        .do-box { background:#d1e7dd; border:2px solid #a3cfbb; }
+        .dont-box { background:#f8d7da; border:2px solid #f1aeb5; }
+        .do-box h3 { color:#0f5132; }
+        .dont-box h3 { color:#842029; }
+        .do-box li, .dont-box li { font-size:0.88rem; margin-bottom:0.4rem; }
+        .card-demo { background:white; border-radius:12px; box-shadow:0 4px 6px rgba(0,0,0,0.02); border:none; overflow:hidden; max-width:280px; margin:0.75rem 0; display:inline-block; vertical-align:top; margin-right:1rem; }
+        .card-demo img { width:100%; height:140px; object-fit:cover; background:#e9ecef; display:flex; align-items:center; justify-content:center; color:#adb5bd; font-size:0.85rem; }
+        .card-demo .card-body-demo { padding:1.25rem; }
+        .card-demo .event-date-demo { font-size:0.85rem; color:#2e6636; font-weight:600; text-transform:uppercase; margin-bottom:0.3rem; }
+        .card-demo .event-title-demo { font-size:1.1rem; font-weight:700; line-height:1.4; color:#111; margin-bottom:0.3rem; }
+        .card-demo .event-location-demo { font-size:0.9rem; color:#6c757d; }
+        .navbar-demo { background:white; padding:0.75rem 1.5rem; border-radius:12px; box-shadow:0 2px 15px rgba(0,0,0,0.05); margin:1rem 0; display:flex; align-items:center; justify-content:space-between; }
+        .navbar-demo .brand { font-weight:800; font-size:1.3rem; color:#333; display:flex; align-items:center; gap:0.5rem; }
+        .navbar-demo .brand i { color:#3a7d44; }
+        .navbar-demo .nav-items { display:flex; gap:0.75rem; align-items:center; font-size:0.85rem; }
+        .navbar-demo .search-demo { background:#f8f9fa; border:none; border-radius:8px; padding:0.5rem 1rem 0.5rem 2.2rem; font-size:0.85rem; width:200px; position:relative; }
+        .sidebar-demo { background:linear-gradient(180deg,#3a7d44,#2e6636); border-radius:12px; padding:1.25rem; color:white; max-width:240px; margin:1rem 0; font-family:'Nunito',sans-serif; }
+        .sidebar-demo .s-brand { height:50px; display:flex; align-items:center; justify-content:center; font-weight:800; letter-spacing:1px; text-transform:uppercase; border-bottom:1px solid rgba(255,255,255,0.15); margin-bottom:0.75rem; font-size:0.95rem; }
+        .sidebar-demo .s-label { font-size:0.65rem; text-transform:uppercase; color:rgba(255,255,255,0.5); font-weight:700; margin:0.5rem 0 0.3rem 0.5rem; }
+        .sidebar-demo .s-link { display:flex; align-items:center; gap:0.6rem; padding:0.5rem 0.75rem; border-radius:0; color:rgba(255,255,255,0.8); font-size:0.85rem; font-weight:600; margin:0.1rem 0; }
+        .sidebar-demo .s-link.active { color:#fff; font-weight:700; border-left:4px solid #fff; background:rgba(255,255,255,0.1); }
+        .badge-demo { display:inline-block; padding:0.3rem 0.65rem; border-radius:4px; font-size:0.75rem; font-weight:600; margin:0.2rem; }
+        .alert-demo { padding:0.9rem 1.25rem; border-radius:8px; margin:0.5rem 0; font-weight:500; font-size:0.9rem; display:flex; align-items:center; gap:0.5rem; }
+        .section-num { display:inline-flex; align-items:center; justify-content:center; width:30px; height:30px; background:#3a7d44; color:white; border-radius:8px; font-weight:700; font-size:0.9rem; margin-right:0.5rem; }
+        .print-bar { position:fixed; top:0; left:0; right:0; background:linear-gradient(135deg,#3a7d44,#2e6636); padding:0.75rem 2rem; display:flex; align-items:center; justify-content:center; gap:1rem; z-index:999; box-shadow:0 4px 20px rgba(0,0,0,0.15); }
+        .print-bar span { color:rgba(255,255,255,0.85); font-size:0.9rem; }
+        .print-btn { background:#ffc107; color:#333; border:none; padding:0.6rem 2rem; border-radius:10px; font-weight:700; font-size:0.95rem; cursor:pointer; font-family:'Inter'; transition:all 0.2s; }
+        .print-btn:hover { transform:translateY(-2px); box-shadow:0 4px 15px rgba(255,193,7,0.5); }
+        .print-spacer { height:60px; }
+        @media print {
+            .print-bar, .print-spacer { display:none !important; }
+            @page { size:A4; margin:15mm 12mm; }
+            html, body { width:210mm; font-size:11pt; -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+            body { background:white !important; }
+            .page { max-width:100%; padding:0.5rem; margin:0; }
+            .page-break { page-break-after:always; height:0; padding:0; margin:0; }
+            h1,h2,h3 { page-break-after:avoid; }
+            table,.component-box,.color-grid,.do-dont { page-break-inside:avoid; }
+            .color-swatch .preview, .navbar-demo, .sidebar-demo, th, tr:nth-child(even),
+            .btn-demo, .alert-demo, .badge-demo, .do-box, .dont-box, .section-num, .hero,
+            .card-demo, .card-demo img { -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="print-bar">
+    <span>📄 UI Guideline TixKita</span>
+    <button class="print-btn" onclick="window.print()">🖨️ Cetak / Simpan PDF</button>
+    <span style="font-size:0.8rem;color:rgba(255,255,255,0.6);">Ctrl+P → Save as PDF (uncheck "Headers and footers")</span>
+</div>
+<div class="print-spacer"></div>
+
+<!-- HERO -->
+<div class="page">
+    <div class="hero">
+        <p style="letter-spacing:4px;font-size:0.8rem;text-transform:uppercase;margin-bottom:0.5rem;">UI Design System</p>
+        <h1 style="font-size:3rem;margin-bottom:0.5rem;"><i class="fas fa-ticket-alt" style="margin-right:0.5rem;"></i>Tix<span style="color:#ffc107;">Kita</span></h1>
+        <p>Panduan komprehensif warna, tipografi, komponen, dan<br>pola desain untuk aplikasi TixKita</p>
+        <div class="version">● Version 1.0 · Platform: Web (Laravel + Bootstrap 5)</div>
+    </div>
+
+    <!-- 1. IDENTITAS PRODUK -->
+    <h1><span class="section-num">1</span> Identitas Produk</h1>
+    <table>
+        <tr><th style="width:180px;">Atribut</th><th>Keterangan</th></tr>
+        <tr><td><strong>Nama Produk</strong></td><td>TixKita</td></tr>
+        <tr><td><strong>Tentang Produk</strong></td><td><strong>TixKita</strong> adalah platform pemesanan tiket event dan travel kit berbasis web. Sistem ini memungkinkan pengguna menjelajahi event, membeli tiket secara online, dan melakukan check-in menggunakan QR Code. Platform ini juga menyediakan panel admin untuk organizer dalam mengelola event, pesanan, dan keuangan.</td></tr>
+        <tr><td><strong>Versi Guideline</strong></td><td>1.0</td></tr>
+        <tr><td><strong>Platform</strong></td><td>Web Application (Desktop & Mobile Responsive)</td></tr>
+        <tr><td><strong>Tujuan</strong></td><td>Dokumen ini menjadi "bahasa bersama" tim desain dan developer agar tampilan aplikasi TixKita konsisten, mudah digunakan, dan dapat dikembangkan secara efisien di seluruh halaman dan fitur.</td></tr>
+    </table>
+</div>
+
+<div class="page page-break"></div>
+
+<!-- 2. COLOR SYSTEM -->
+<div class="page">
+    <h1><span class="section-num">2</span> Color System</h1>
+    <p>TixKita menggunakan sistem warna <strong>dinamis berbasis CSS Variables</strong> yang dapat dikonfigurasi melalui admin panel.</p>
+
+    <h2>Primary & Secondary Colors</h2>
+    <p>Warna utama brand TixKita, dikonfigurasi melalui <code>--primary-color</code> dan <code>--secondary-color</code>.</p>
+    <div class="color-grid">
+        <div class="color-swatch"><div class="preview" style="background:#3a7d44;"></div><div class="info"><div class="name">Primary</div><div class="hex">#3a7d44</div></div></div>
+        <div class="color-swatch"><div class="preview" style="background:#2e6636;"></div><div class="info"><div class="name">Secondary</div><div class="hex">#2e6636</div></div></div>
+    </div>
+
+    <h2>Configurable UI Colors</h2>
+    <p>Warna header, footer bisa dikustomisasi admin. Default values:</p>
+    <div class="color-grid">
+        <div class="color-swatch"><div class="preview" style="background:#ffffff;border:1px solid #eee;"></div><div class="info"><div class="name">Header BG</div><div class="hex">#ffffff</div></div></div>
+        <div class="color-swatch"><div class="preview" style="background:#000000;"></div><div class="info"><div class="name">Header Text</div><div class="hex">#000000</div></div></div>
+        <div class="color-swatch"><div class="preview" style="background:#ffffff;border:1px solid #eee;"></div><div class="info"><div class="name">Footer BG</div><div class="hex">#ffffff</div></div></div>
+        <div class="color-swatch"><div class="preview" style="background:#333333;"></div><div class="info"><div class="name">Footer Text</div><div class="hex">#333333</div></div></div>
+    </div>
+
+    <h2>Base Colors</h2>
+    <div class="color-grid">
+        <div class="color-swatch"><div class="preview" style="background:#333333;"></div><div class="info"><div class="name">Body Text</div><div class="hex">#333333</div></div></div>
+        <div class="color-swatch"><div class="preview" style="background:#111111;"></div><div class="info"><div class="name">Title Text</div><div class="hex">#111111</div></div></div>
+        <div class="color-swatch"><div class="preview" style="background:#6c757d;"></div><div class="info"><div class="name">Muted Text</div><div class="hex">#6c757d</div></div></div>
+        <div class="color-swatch"><div class="preview" style="background:#f8f9fa;"></div><div class="info"><div class="name">Page BG</div><div class="hex">#f8f9fa</div></div></div>
+        <div class="color-swatch"><div class="preview" style="background:#f8f9fc;"></div><div class="info"><div class="name">Admin BG</div><div class="hex">#f8f9fc</div></div></div>
+        <div class="color-swatch"><div class="preview" style="background:#ffffff;border:1px solid #eee;"></div><div class="info"><div class="name">White</div><div class="hex">#FFFFFF</div></div></div>
+    </div>
+
+    <h2>Status Colors (Bootstrap Soft)</h2>
+    <div class="color-grid">
+        <div class="color-swatch"><div class="preview" style="background:#d1e7dd;"></div><div class="info"><div class="name">Success</div><div class="hex">#d1e7dd / #0f5132</div></div></div>
+        <div class="color-swatch"><div class="preview" style="background:#fff3cd;"></div><div class="info"><div class="name">Warning</div><div class="hex">#fff3cd / #664d03</div></div></div>
+        <div class="color-swatch"><div class="preview" style="background:#f8d7da;"></div><div class="info"><div class="name">Danger</div><div class="hex">#f8d7da / #842029</div></div></div>
+        <div class="color-swatch"><div class="preview" style="background:#cff4fc;"></div><div class="info"><div class="name">Info</div><div class="hex">#cff4fc / #055160</div></div></div>
+    </div>
+</div>
+
+<div class="page page-break"></div>
+
+<!-- 3. TYPOGRAPHY -->
+<div class="page">
+    <h1><span class="section-num">3</span> Typography System</h1>
+
+    <div class="component-box" style="display:flex;align-items:center;gap:2rem;flex-wrap:wrap;">
+        <div style="text-align:center;">
+            <div style="font-size:4rem;font-weight:700;color:#3a7d44;font-family:'Inter';">Aa</div>
+            <div style="font-size:1.2rem;font-weight:700;">Inter</div>
+            <div style="font-size:0.8rem;color:#6b7280;">Public Pages</div>
+        </div>
+        <div style="text-align:center;">
+            <div style="font-size:4rem;font-weight:700;color:#2e6636;font-family:'Nunito';">Aa</div>
+            <div style="font-size:1.2rem;font-weight:700;font-family:'Nunito';">Nunito</div>
+            <div style="font-size:0.8rem;color:#6b7280;">Admin Panel</div>
+        </div>
+        <div style="flex:1;min-width:200px;">
+            <p style="font-size:0.85rem;color:#6b7280;"><strong>Inter</strong> digunakan pada halaman publik (customer-facing) karena tampilannya yang clean dan professional. <strong>Nunito</strong> digunakan pada admin panel untuk tampilan yang ramah dan mudah dibaca.</p>
+        </div>
+    </div>
+
+    <h2>Hirarki Tipografi</h2>
+    <table>
+        <tr><th>Elemen</th><th>Font</th><th>Spesifikasi</th><th>Penggunaan</th></tr>
+        <tr><td><strong>Brand</strong></td><td>Inter</td><td>Weight 800 / 1.5rem</td><td>Logo navbar</td></tr>
+        <tr><td><strong>Event Title</strong></td><td>Inter</td><td>Weight 700 / 1.1rem</td><td>Judul event di card</td></tr>
+        <tr><td><strong>Event Date</strong></td><td>Inter</td><td>Weight 600 / 0.85rem uppercase</td><td>Tanggal event</td></tr>
+        <tr><td><strong>Body</strong></td><td>Inter</td><td>Weight 400 / 1rem</td><td>Konten utama</td></tr>
+        <tr><td><strong>Admin Header</strong></td><td>Nunito</td><td>Weight 700 / card-header</td><td>Judul card admin</td></tr>
+        <tr><td><strong>Sidebar Link</strong></td><td>Nunito</td><td>Weight 600 / 0.9rem</td><td>Menu navigasi admin</td></tr>
+        <tr><td><strong>Caption</strong></td><td>Inter/Nunito</td><td>Weight 400 / 0.85rem</td><td>Label, metadata</td></tr>
+    </table>
+</div>
+
+<div class="page page-break"></div>
+
+<!-- 4. SPACING & BORDER RADIUS -->
+<div class="page">
+    <h1><span class="section-num">4</span> Spacing & Border Radius</h1>
+
+    <h2>Spacing Scale</h2>
+    <table>
+        <tr><th>Nilai</th><th>CSS</th><th>Penggunaan</th></tr>
+        <tr><td><strong>8px</strong></td><td>0.5rem</td><td>Gap antar badge, padding inline</td></tr>
+        <tr><td><strong>12px</strong></td><td>0.75rem</td><td>Sidebar link padding, gap</td></tr>
+        <tr><td><strong>15px</strong></td><td>~1rem</td><td>Navbar padding</td></tr>
+        <tr><td><strong>20px</strong></td><td>1.25rem</td><td>Card body padding, sidebar</td></tr>
+        <tr><td><strong>32px</strong></td><td>2rem</td><td>Admin page content padding</td></tr>
+        <tr><td><strong>50px</strong></td><td>~3rem</td><td>Footer margin-top</td></tr>
+    </table>
+
+    <h2>Border Radius</h2>
+    <div style="display:flex;gap:1.5rem;flex-wrap:wrap;margin:1rem 0;">
+        <div style="text-align:center;"><div style="width:70px;height:70px;background:#3a7d44;border-radius:4px;margin-bottom:0.4rem;"></div><strong style="color:#3a7d44;">4px</strong><br><span style="font-size:0.8rem;color:#6b7280;">Badge</span></div>
+        <div style="text-align:center;"><div style="width:70px;height:70px;background:#3a7d44;border-radius:8px;margin-bottom:0.4rem;"></div><strong style="color:#3a7d44;">8px</strong><br><span style="font-size:0.8rem;color:#6b7280;">Button, search, admin card</span></div>
+        <div style="text-align:center;"><div style="width:70px;height:70px;background:#3a7d44;border-radius:12px;margin-bottom:0.4rem;"></div><strong style="color:#3a7d44;">12px</strong><br><span style="font-size:0.8rem;color:#6b7280;">Event card</span></div>
+        <div style="text-align:center;"><div style="width:70px;height:70px;background:#3a7d44;border-radius:16px;margin-bottom:0.4rem;"></div><strong style="color:#3a7d44;">16px</strong><br><span style="font-size:0.8rem;color:#6b7280;">Mobile menu dropdown</span></div>
+        <div style="text-align:center;"><div style="width:70px;height:70px;background:#3a7d44;border-radius:50%;margin-bottom:0.4rem;"></div><strong style="color:#3a7d44;">50%</strong><br><span style="font-size:0.8rem;color:#6b7280;">Avatar, pill badge</span></div>
+    </div>
+</div>
+
+<div class="page page-break"></div>
+
+<!-- 5. KOMPONEN UI -->
+<div class="page">
+    <h1><span class="section-num">5</span> Komponen UI</h1>
+
+    <h2>Button System</h2>
+    <div class="component-box">
+        <div style="margin:0.5rem 0;">
+            <button class="btn-demo btn-primary-demo"><i class="fas fa-check"></i> Primary</button>
+            <button class="btn-demo btn-secondary-demo">Secondary</button>
+            <button class="btn-demo btn-outline-demo">Outline Primary</button>
+            <button class="btn-demo btn-danger-demo"><i class="fas fa-trash"></i> Danger</button>
+            <button class="btn-demo btn-warning-demo">Warning</button>
+        </div>
+    </div>
+    <table>
+        <tr><th>Varian</th><th>Background</th><th>Border Radius</th><th>Penggunaan</th></tr>
+        <tr><td>Primary Custom</td><td>var(--primary-color)</td><td>8px</td><td>CTA utama, beli tiket</td></tr>
+        <tr><td>Outline Primary</td><td>Transparent + border</td><td>8px</td><td>Aksi sekunder</td></tr>
+        <tr><td>Danger</td><td>#dc3545</td><td>Bootstrap default</td><td>Hapus, batalkan</td></tr>
+        <tr><td>Warning</td><td>#ffc107</td><td>Bootstrap default</td><td>Peringatan, edit</td></tr>
+    </table>
+
+    <h2>Event Card</h2>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+        <div class="card-demo">
+            <div style="height:140px;background:linear-gradient(135deg,#3a7d44,#6cb470);display:flex;align-items:center;justify-content:center;color:white;font-size:2rem;"><i class="fas fa-music"></i></div>
+            <div class="card-body-demo">
+                <div class="event-date-demo"><i class="fas fa-calendar-alt"></i> 15 MAR 2026</div>
+                <div class="event-title-demo">Music Festival Surabaya</div>
+                <div class="event-location-demo"><i class="fas fa-map-marker-alt"></i> Grand City Mall</div>
+            </div>
+        </div>
+    </div>
+    <table>
+        <tr><th>Properti</th><th>Nilai</th></tr>
+        <tr><td>Border</td><td>none</td></tr>
+        <tr><td>Border Radius</td><td>12px</td></tr>
+        <tr><td>Box Shadow</td><td>0 4px 6px rgba(0,0,0,0.02)</td></tr>
+        <tr><td>Hover Effect</td><td>translateY(-5px) + shadow 0 12px 20px rgba(0,0,0,0.1)</td></tr>
+        <tr><td>Card Body Padding</td><td>1.25rem</td></tr>
+    </table>
+
+    <h2>Alert / Toast (SweetAlert2)</h2>
+    <div style="max-width:500px;margin:1rem 0;">
+        <div class="alert-demo" style="background:#d1e7dd;color:#0f5132;border:1px solid #a3cfbb;">✅ <strong>Berhasil!</strong> Tiket berhasil dipesan.</div>
+        <div class="alert-demo" style="background:#f8d7da;color:#842029;border:1px solid #f1aeb5;">❌ <strong>Gagal!</strong> Terjadi kesalahan saat checkout.</div>
+    </div>
+    <p>TixKita menggunakan <strong>SweetAlert2 Toast</strong> untuk notifikasi (position: top-end, timer: 3 detik).</p>
+
+    <h2>Badge (Soft Colors)</h2>
+    <div style="margin:1rem 0;">
+        <span class="badge-demo" style="background:#d1e7dd;color:#0f5132;">Lunas</span>
+        <span class="badge-demo" style="background:#fff3cd;color:#664d03;">Pending</span>
+        <span class="badge-demo" style="background:#f8d7da;color:#842029;">Gagal</span>
+        <span class="badge-demo" style="background:#cff4fc;color:#055160;">Info</span>
+        <span class="badge-demo" style="background:#e2e3e5;color:#41464b;">Draft</span>
+    </div>
+</div>
+
+<div class="page page-break"></div>
+
+<!-- 6. SPESIFIKASI LAYOUT -->
+<div class="page">
+    <h1><span class="section-num">6</span> Spesifikasi Layout</h1>
+
+    <h2>Public Navbar</h2>
+    <div class="navbar-demo">
+        <div class="brand"><i class="fas fa-ticket-alt"></i> TixKita</div>
+        <div class="nav-items">
+            <div style="background:#f8f9fa;padding:0.4rem 0.8rem;border-radius:8px;font-size:0.8rem;color:#adb5bd;"><i class="fas fa-search" style="margin-right:0.3rem;"></i> Cari event seru...</div>
+            <i class="fas fa-shopping-bag" style="color:#333;"></i>
+            <i class="far fa-user" style="color:#333;"></i>
+        </div>
+    </div>
+    <table>
+        <tr><th>Properti</th><th>Nilai</th><th>Keterangan</th></tr>
+        <tr><td>Background</td><td>var(--header-bg)</td><td>Bisa dikonfigurasi admin</td></tr>
+        <tr><td>Position</td><td>sticky-top</td><td>Selalu terlihat saat scroll</td></tr>
+        <tr><td>Padding</td><td>15px 0</td><td>Vertical padding</td></tr>
+        <tr><td>Shadow</td><td>0 2px 15px rgba(0,0,0,0.05)</td><td>Shadow halus</td></tr>
+        <tr><td>Search Bar</td><td>bg-light, radius 8px</td><td>Max-width 500px</td></tr>
+    </table>
+
+    <h2>Admin Sidebar</h2>
+    <div class="sidebar-demo">
+        <div class="s-brand"><i class="fas fa-ticket-alt" style="margin-right:0.5rem;"></i> TixKita</div>
+        <div class="s-label">Menu Utama</div>
+        <div class="s-link active"><i class="fas fa-tachometer-alt" style="width:20px;text-align:center;"></i> Dashboard</div>
+        <div class="s-label">Manajemen Data</div>
+        <div class="s-link"><i class="fas fa-calendar-alt" style="width:20px;text-align:center;"></i> Daftar Event</div>
+        <div class="s-link"><i class="fas fa-qrcode" style="width:20px;text-align:center;"></i> Bookings / Scan</div>
+        <div class="s-link"><i class="fas fa-box-open" style="width:20px;text-align:center;"></i> Produk & Kit</div>
+    </div>
+    <table>
+        <tr><th>Properti</th><th>Nilai</th><th>Keterangan</th></tr>
+        <tr><td>Width</td><td><strong>250px</strong></td><td>Fixed sidebar width</td></tr>
+        <tr><td>Background</td><td>gradient Primary → Secondary</td><td>180deg vertical</td></tr>
+        <tr><td>Brand Height</td><td>70px</td><td>Area logo/title</td></tr>
+        <tr><td>Active Link</td><td>border-left 4px solid #fff</td><td>Indikator aktif</td></tr>
+        <tr><td>Top Navbar</td><td>70px, bg white</td><td>Sticky, shadow</td></tr>
+    </table>
+
+    <h2>Layout Summary</h2>
+    <table>
+        <tr><th>Elemen</th><th>Nilai</th><th>Keterangan</th></tr>
+        <tr><td>Container</td><td><strong>Bootstrap default</strong></td><td>Responsive container</td></tr>
+        <tr><td>Sidebar Width</td><td><strong>250px</strong></td><td>Admin sidebar fixed</td></tr>
+        <tr><td>Top Navbar</td><td><strong>70px</strong></td><td>Admin top bar</td></tr>
+        <tr><td>Admin Content Padding</td><td><strong>0 2rem</strong></td><td>container-fluid px-4</td></tr>
+        <tr><td>Footer Margin Top</td><td><strong>50px</strong></td><td>Public footer spacing</td></tr>
+        <tr><td>Card Admin Shadow</td><td><strong>0 .15rem 1.75rem rgba(58,59,69,.15)</strong></td><td>Shadow SB Admin style</td></tr>
+        <tr><td>Card Admin Radius</td><td><strong>0.5rem (8px)</strong></td><td>Admin cards</td></tr>
+        <tr><td>Body BG (Public)</td><td><strong>#f8f9fa</strong></td><td>Bootstrap light gray</td></tr>
+        <tr><td>Body BG (Admin)</td><td><strong>#f8f9fc</strong></td><td>Slightly blue-gray</td></tr>
+    </table>
+</div>
+
+<div class="page page-break"></div>
+
+<!-- 7. DO & DON'T -->
+<div class="page">
+    <h1><span class="section-num">7</span> Do & Don't</h1>
+
+    <div class="do-dont">
+        <div class="do-box">
+            <h3>✅ Do — Lakukan</h3>
+            <ol>
+                <li>Gunakan <strong>CSS Variables</strong> (<code>--primary-color</code>, <code>--secondary-color</code>) untuk semua warna brand agar tetap dinamis.</li>
+                <li>Gunakan <strong>Inter</strong> untuk halaman publik dan <strong>Nunito</strong> untuk admin panel secara konsisten.</li>
+                <li>Event card <strong>selalu</strong> menggunakan <strong>border-radius 12px</strong> dan efek <strong>hover translateY(-5px)</strong>.</li>
+                <li>Status badge <strong>selalu</strong> menggunakan warna <strong>soft</strong> (background pastel + teks gelap), bukan warna solid Bootstrap.</li>
+                <li>Gunakan <strong>SweetAlert2 Toast</strong> untuk semua notifikasi sukses/error, bukan alert HTML biasa.</li>
+                <li>Sidebar admin <strong>selalu</strong> menggunakan <strong>gradient vertical</strong> dari Primary ke Secondary.</li>
+                <li>Gunakan <strong>Font Awesome 6</strong> untuk semua icon secara konsisten.</li>
+                <li>Navbar publik harus <strong>sticky-top</strong> agar selalu terlihat saat scroll.</li>
+                <li>Search bar menggunakan background <strong>#f8f9fa (bg-light)</strong> tanpa border untuk tampilan clean.</li>
+                <li>Setiap halaman admin membungkus konten dalam <strong>card dengan shadow</strong> standar.</li>
+            </ol>
+        </div>
+
+        <div class="dont-box">
+            <h3>❌ Don't — Jangan</h3>
+            <ol>
+                <li>Jangan <strong>hard-code warna</strong> primary/secondary — selalu gunakan CSS variable agar tetap bisa dikonfigurasi admin.</li>
+                <li>Jangan gunakan font di luar <strong>Inter dan Nunito</strong>; dua font ini adalah standar yang diizinkan.</li>
+                <li>Jangan gunakan <strong>Bootstrap alert bawaan</strong> untuk notifikasi; selalu gunakan SweetAlert2.</li>
+                <li>Jangan mengubah <strong>lebar sidebar</strong> dari <strong>250px</strong>; dimensi ini sudah dikalibrasi.</li>
+                <li>Jangan menggunakan <strong>badge warna solid</strong> (bg-success/danger) — gunakan varian <strong>soft</strong> (bg-soft-success).</li>
+                <li>Jangan mengubah <strong>border-radius event card</strong> dari <strong>12px</strong>; ini adalah identitas visual card TixKita.</li>
+                <li>Jangan membuat card admin <strong>dengan border visible</strong> — gunakan <code>border: none</code> dan shadow sebagai pembatas.</li>
+                <li>Jangan mengubah <strong>hamburger icon animation</strong> — animasi X sudah dikalibrasi dengan timing yang tepat.</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<script>
+    var originalTitle = document.title;
+    window.addEventListener('beforeprint', function() { document.title = ' '; });
+    window.addEventListener('afterprint', function() { document.title = originalTitle; });
+</script>
+</body>
+</html>
