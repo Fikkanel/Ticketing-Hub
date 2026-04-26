@@ -62,9 +62,10 @@ class PublicController extends Controller
         if ($request->has('category') && !empty($request->category)) {
             if ($request->category === 'free') {
                 // Filter FREE: event dimana semua produk harganya 0
-                $query->whereHas('products', function($q) {
-                    $q->havingRaw('MAX(harga) = 0');
-                }, '>=', 1);
+                $query->whereHas('products')
+                      ->whereDoesntHave('products', function($q) {
+                          $q->where('harga', '>', 0);
+                      });
             } else {
                 // Filter by category via pivot table
                 $query->whereHas('categories', function($q) use ($request) {
