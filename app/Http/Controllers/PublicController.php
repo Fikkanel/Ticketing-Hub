@@ -20,6 +20,7 @@ use App\Models\Banner;
 use App\Models\Bundle;
 use App\Services\MidtransService;
 use Illuminate\Support\Facades\Hash;      
+use App\Models\WaitingRoomEntry;
 
 class PublicController extends Controller
 {
@@ -1088,6 +1089,67 @@ class PublicController extends Controller
             // Create individual tickets based on quantity
             \App\Models\Ticket::createForOrderItem($orderItem);
         }
+    }
+
+    // =========================================================================
+    // WAITING ROOM (Virtual Queue)
+    // =========================================================================
+
+    /**
+     * Tampilkan halaman ruang tunggu virtual.
+     */
+    public function showWaitingRoom(Request $request, $event_id)
+    {
+        $event = Event::findOrFail($event_id);
+        $sessionId = $request->session()->getId();
+
+        // Cleanup & promote
+        WaitingRoomEntry::cleanup($event_id);
+        WaitingRoomEntry::promoteNext($event_id);
+
+        $entry = WaitingRoomEntry::findOrCreateForSession($sessionId, $event_id);
+
+        // Jika sudah aktif, redirect langsung ke event
+        if ($entry->status === 'active') {
+            return redirect()->route('public.event.detail', $event_id);
+        }
+
+        return view('public.waiting_room', compact('event', 'entry'));
+    }
+
+    /**
+     * API: Cek status antrian (dipanggil via polling dari halaman waiting room).
+     */
+    public function checkWaitingStatus(Request $request, $event_id)
+    {
+        $token = $request->query('token');
+
+        if (!$token) {
+            return response()->json(['status' => 'expired', 'message' => 'Token tidak valid'], 400);
+        }
+
+        // Cleanup & promote
+        WaitingRoomEntry::cleanup($event_id);
+        WaitingRoomEntry::promoteNext($event_id);
+
+        $entry = WaitingRoomEntry::where('token', $token)
+                    ->where('event_id', $event_id)
+                    ->first();
+
+        if (!$entry) {
+            return response()->json(['status' => 'expired', 'message' => 'Sesi antrian tidak ditemukan']);
+        }
+
+        // Refresh entry setelah promote
+        $entry->refresh();
+
+        return response()->json([
+            'status' => $entry->status,
+            'position' => $entry->position,
+            'estimated_wait' => $entry->estimated_wait,
+            'active_users' => WaitingRoomEntry::activeCount($event_id),
+            'max_active' => WaitingRoomEntry::MAX_ACTIVE_USERS,
+        ]);
     }
 
 }

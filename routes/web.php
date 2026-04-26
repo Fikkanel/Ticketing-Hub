@@ -30,8 +30,14 @@ Route::get('/', [PublicController::class, 'index'])->name('public.index');
 // Halaman Utama: Filter berdasarkan Kategori (URL bersih)
 Route::get('/category/{slug}', [PublicController::class, 'index'])->name('public.category');
 
-// Halaman Detail Acara
-Route::get('/events/{event_id}', [PublicController::class, 'showEventDetail'])->name('public.event.detail');
+// Halaman Detail Acara (dilindungi Waiting Room saat traffic tinggi)
+Route::get('/events/{event_id}', [PublicController::class, 'showEventDetail'])
+    ->middleware('waiting_room')
+    ->name('public.event.detail');
+
+// Waiting Room (Virtual Queue)
+Route::get('/waiting-room/{event_id}', [PublicController::class, 'showWaitingRoom'])->name('public.waiting_room');
+Route::get('/waiting-room/status/{event_id}', [PublicController::class, 'checkWaitingStatus'])->name('public.waiting_room.status');
 
 // Halaman Profil Organizer
 Route::get('/organizer/{slug}', [PublicController::class, 'showOrganizerProfile'])->name('public.organizer.profile');
