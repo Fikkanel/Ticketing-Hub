@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Hash;
 
 class PublicController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, $slug = null)
     {
         // 1. Ambil Data Lokasi untuk Filter
         $locations = Location::all();
@@ -33,6 +33,9 @@ class PublicController extends Controller
 
         // 2. Ambil Banner Utama (Aktif)
         $banners = Banner::where('is_active', true)->orderBy('order')->get();
+
+        // Resolve category: prioritaskan slug dari URL, fallback ke query param
+        $categoryFilter = $slug ?? $request->category;
 
         // 3. Query Event Dasar (Hanya yang Aktif & Masa Depan/Sekarang)
         $query = Event::with(['location', 'products:product_id,event_id,harga', 'categories'])
@@ -59,18 +62,25 @@ class PublicController extends Controller
         }
         
         // Filter by Category
-        if ($request->has('category') && !empty($request->category)) {
-            if ($request->category === 'free') {
+        if (!empty($categoryFilter)) {
+            if ($categoryFilter === 'free') {
                 // Filter FREE: event dimana semua produk harganya 0
                 $query->whereHas('products')
                       ->whereDoesntHave('products', function($q) {
                           $q->where('harga', '>', 0);
                       });
             } else {
-                // Filter by category via pivot table
-                $query->whereHas('categories', function($q) use ($request) {
-                    $q->where('categories.id', $request->category);
-                });
+                // Cari berdasarkan slug atau ID
+                $category = \App\Models\Category::where('slug', $categoryFilter)
+                    ->orWhere('id', $categoryFilter)
+                    ->first();
+                
+                if ($category) {
+                    $query->whereHas('categories', function($q) use ($category) {
+                        $q->where('categories.id', $category->id);
+                    });
+                    $categoryFilter = $category->slug; // normalize to slug
+                }
             }
         }
 
@@ -78,7 +88,7 @@ class PublicController extends Controller
         $locations = Location::all();
         
         // Active category untuk highlight
-        $activeCategory = $request->category;
+        $activeCategory = $categoryFilter;
         
         return view('public.index', compact('events', 'locations', 'banners', 'categories', 'activeCategory'));
     }

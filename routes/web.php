@@ -27,6 +27,9 @@ use App\Http\Controllers\Admin\BannerController;
 // Halaman Utama: Kalender Acara
 Route::get('/', [PublicController::class, 'index'])->name('public.index');
 
+// Halaman Utama: Filter berdasarkan Kategori (URL bersih)
+Route::get('/category/{slug}', [PublicController::class, 'index'])->name('public.category');
+
 // Halaman Detail Acara
 Route::get('/events/{event_id}', [PublicController::class, 'showEventDetail'])->name('public.event.detail');
 

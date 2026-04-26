@@ -63,21 +63,21 @@
     <div class="category-filter-section mb-1 mt-2">
         <div class="d-flex flex-nowrap overflow-auto gap-2 py-2 hide-scrollbar">
             {{-- All Button --}}
-            <a href="{{ route('public.index', array_merge(request()->except(['category', 'guest_token']), ['category' => ''])) }}" 
+            <a href="{{ route('public.index') }}" 
                class="btn {{ empty($activeCategory) ? 'btn-primary-custom' : 'btn-outline-secondary' }} rounded-pill px-4 py-2 text-nowrap flex-shrink-0 category-pill">
                 All
             </a>
             
             {{-- FREE Button (Auto: Events with all 0 price) --}}
-            <a href="{{ route('public.index', array_merge(request()->except(['category', 'guest_token']), ['category' => 'free'])) }}" 
+            <a href="{{ route('public.category', 'free') }}" 
                class="btn {{ $activeCategory === 'free' ? 'btn-success' : 'btn-outline-success' }} rounded-pill px-4 py-2 text-nowrap flex-shrink-0 category-pill">
                 <i class="fas fa-gift me-1"></i> Free
             </a>
             
             {{-- Category Pills --}}
             @foreach($categories as $category)
-                <a href="{{ route('public.index', array_merge(request()->except(['category', 'guest_token']), ['category' => $category->id])) }}" 
-                   class="btn {{ $activeCategory == $category->id ? 'btn-primary-custom' : 'btn-outline-secondary' }} rounded-pill px-4 py-2 text-nowrap flex-shrink-0 category-pill">
+                <a href="{{ route('public.category', $category->slug) }}" 
+                   class="btn {{ $activeCategory == $category->slug ? 'btn-primary-custom' : 'btn-outline-secondary' }} rounded-pill px-4 py-2 text-nowrap flex-shrink-0 category-pill">
                     @if($category->icon)
                         <i class="fas {{ $category->icon }} me-1"></i>
                     @endif
