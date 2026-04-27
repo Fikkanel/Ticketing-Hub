@@ -92,12 +92,9 @@ Route::middleware('guest:customer')->group(function () {
     Route::post('/login', [CustomerAuthController::class, 'login'])->name('customer.login.process');
     
     Route::get('/register', [CustomerAuthController::class, 'showRegisterForm'])->name('customer.register');
-    Route::post('/register', [CustomerAuthController::class, 'requestRegisterOtp'])->name('customer.register.otp');
+    Route::post('/register', [CustomerAuthController::class, 'register'])->name('customer.register.process');
     
-    Route::get('/verify-otp', [CustomerAuthController::class, 'showVerifyOtpForm'])->name('customer.verify-otp');
-    Route::post('/verify-otp', [CustomerAuthController::class, 'verifyOtp'])->name('customer.verify-otp.process');
-    Route::post('/resend-otp', [CustomerAuthController::class, 'resendOtp'])->name('customer.resend-otp');
-    
+
     // Forgot Password Routes
     Route::get('/forgot-password', [CustomerAuthController::class, 'showForgotPasswordForm'])->name('customer.password.request');
     Route::post('/forgot-password', [CustomerAuthController::class, 'sendResetLink'])->name('customer.password.email');

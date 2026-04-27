@@ -75,16 +75,18 @@ class CustomerAuthController extends Controller
     }
 
     /**
-     * Proses request OTP untuk register.
-     * OTP hanya digunakan untuk verifikasi email saat registrasi.
+     * Proses pendaftaran langsung (tanpa OTP, dengan Captcha).
      */
-    public function requestRegisterOtp(Request $request)
+    public function register(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:100',
             'email' => 'required|email',
             'phone' => 'nullable|string|max:20',
             'password' => 'required|string|min:6|confirmed',
+            'captcha' => 'required|captcha',
+        ], [
+            'captcha.captcha' => 'Kode captcha yang Anda masukkan tidak sesuai. Silakan coba lagi.'
         ]);
 
         $email = strtolower(trim($request->email));
@@ -94,114 +96,23 @@ class CustomerAuthController extends Controller
 
         if ($existingCustomer) {
             return back()->with('error', 'Email sudah terdaftar. Silakan login.')
-                ->withInput($request->except('password', 'password_confirmation'));
+                ->withInput($request->except('password', 'password_confirmation', 'captcha'));
         }
 
-        // Simpan data sementara di session (termasuk password)
-        session([
-            'register_data' => [
-                'name' => $request->name,
-                'email' => $email,
-                'phone' => $request->phone,
-                'password' => Hash::make($request->password), // Hash password
-            ]
-        ]);
-
-        // Generate dan kirim OTP
-        try {
-            $this->sendOtp($email, 'register');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Gagal mengirim kode OTP. Silakan coba lagi nanti.')
-                ->withInput($request->except('password', 'password_confirmation'));
-        }
-
-        return redirect()->route('customer.verify-otp')
-            ->with('email', $email)
-            ->with('type', 'register')
-            ->with('success', 'Kode OTP telah dikirim ke email Anda.');
-    }
-
-    /**
-     * Tampilkan halaman verifikasi OTP (hanya untuk register).
-     */
-    public function showVerifyOtpForm(Request $request)
-    {
-        $email = session('email') ?? $request->query('email');
-        $type = session('type') ?? $request->query('type', 'register');
-
-        if (!$email || $type !== 'register') {
-            return redirect()->route('customer.register')
-                ->with('error', 'Session expired. Silakan daftar ulang.');
-        }
-
-        return view('customer.auth.verify-otp', compact('email', 'type'));
-    }
-
-    /**
-     * Proses verifikasi OTP (hanya untuk register).
-     */
-    public function verifyOtp(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'otp' => 'required|string|size:6',
-        ]);
-
-        $email = strtolower(trim($request->email));
-        $otp = $request->otp;
-
-        // Verifikasi OTP
-        if (!CustomerOtp::verify($email, $otp)) {
-            return back()->with('error', 'Kode OTP tidak valid atau sudah kedaluwarsa.')
-                ->withInput();
-        }
-
-        // Proses registrasi
-        $registerData = session('register_data');
-
-        if (!$registerData || $registerData['email'] !== $email) {
-            return redirect()->route('customer.register')
-                ->with('error', 'Session expired. Silakan daftar ulang.');
-        }
-
-        // Buat customer baru dengan password
+        // Buat customer baru
         $customer = Customer::create([
-            'name' => $registerData['name'],
+            'name' => $request->name,
             'email' => $email,
-            'phone' => $registerData['phone'] ?? null,
-            'password' => $registerData['password'], // Password sudah di-hash
-            'email_verified_at' => now(),
+            'phone' => $request->phone,
+            'password' => Hash::make($request->password),
+            'email_verified_at' => now(), // Otomatis verified
         ]);
-
-        // Clear session
-        session()->forget('register_data');
 
         // Login customer
         Auth::guard('customer')->login($customer, true);
 
         return redirect()->route('customer.dashboard')
             ->with('success', 'Selamat datang di TixKita! Akun Anda berhasil dibuat.');
-    }
-
-    /**
-     * Kirim ulang OTP (hanya untuk register).
-     */
-    public function resendOtp(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-        ]);
-
-        $email = strtolower(trim($request->email));
-
-        // Generate dan kirim OTP baru
-        try {
-            $this->sendOtp($email, 'register');
-        } catch (\Exception $e) {
-            return back()->with('error', 'Gagal mengirim kode OTP. Silakan coba lagi nanti.');
-        }
-
-        return back()->with('success', 'Kode OTP baru telah dikirim ke email Anda.');
     }
 
     /**

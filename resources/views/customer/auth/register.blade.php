@@ -132,7 +132,7 @@
     <h1 class="auth-title">Daftar Akun</h1>
     <p class="auth-subtitle">Silakan isi form dibawah</p>
 
-    <form method="POST" action="{{ route('customer.register.otp') }}">
+    <form method="POST" action="{{ route('customer.register.process') }}">
         @csrf
         
         <div class="auth-input-wrapper">
@@ -161,8 +161,29 @@
             <input type="password" name="password_confirmation" placeholder="Ulangi password" required minlength="6">
         </div>
         
-        <button type="submit" class="auth-btn">Daftar</button>
+        <div class="mb-3">
+            <div class="d-flex align-items-center mb-2 justify-content-between">
+                <div>{!! captcha_img('flat') !!}</div>
+                <button type="button" class="btn btn-sm btn-outline-secondary" onclick="reloadCaptcha()"><i class="fas fa-sync-alt"></i> Reload</button>
+            </div>
+            <div class="auth-input-wrapper mb-0">
+                <span class="auth-icon"><i class="fas fa-shield-alt"></i></span>
+                <input type="text" name="captcha" placeholder="Masukkan kode di atas" required>
+            </div>
+        </div>
+
+        <button type="submit" class="auth-btn mt-3">Daftar</button>
     </form>
+    
+    <script>
+        function reloadCaptcha() {
+            var img = document.querySelector('img[src*="captcha"]');
+            if(img) {
+                var currentSrc = img.src.split('?')[0];
+                img.src = currentSrc + '?' + Math.random();
+            }
+        }
+    </script>
     
     <div class="auth-terms">
         Dengan mendaftar, Anda menyetujui 
