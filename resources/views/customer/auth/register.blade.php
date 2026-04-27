@@ -153,12 +153,14 @@
         
         <div class="auth-input-wrapper">
             <span class="auth-icon"><i class="fas fa-lock"></i></span>
-            <input type="password" name="password" placeholder="Password" required minlength="6">
+            <input type="password" name="password" id="password" placeholder="Password" required minlength="6">
+            <span class="auth-icon toggle-password" style="cursor: pointer;" onclick="togglePassword('password', this)"><i class="far fa-eye"></i></span>
         </div>
         
         <div class="auth-input-wrapper">
             <span class="auth-icon"><i class="fas fa-lock"></i></span>
-            <input type="password" name="password_confirmation" placeholder="Ulangi password" required minlength="6">
+            <input type="password" name="password_confirmation" id="password_confirmation" placeholder="Ulangi password" required minlength="6">
+            <span class="auth-icon toggle-password" style="cursor: pointer;" onclick="togglePassword('password_confirmation', this)"><i class="far fa-eye"></i></span>
         </div>
         
         <div class="mb-3">
@@ -181,6 +183,20 @@
             if(img) {
                 var currentSrc = img.src.split('?')[0];
                 img.src = currentSrc + '?' + Math.random();
+            }
+        }
+        
+        function togglePassword(inputId, iconElement) {
+            const input = document.getElementById(inputId);
+            const icon = iconElement.querySelector('i');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
             }
         }
     </script>
