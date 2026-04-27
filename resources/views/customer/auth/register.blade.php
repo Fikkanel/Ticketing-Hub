@@ -166,11 +166,56 @@
     
     <div class="auth-terms">
         Dengan mendaftar, Anda menyetujui 
-        <a href="{{ route('public.terms') }}" target="_blank">Syarat & Ketentuan</a> TixKita.
+        <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Syarat & Ketentuan</a> TixKita.
     </div>
     
     <div class="auth-login-link">
         <span>Sudah punya akun?</span> <a href="{{ route('customer.login') }}">Masuk sekarang</a>
     </div>
+</div>
+
+<!-- Modal Syarat & Ketentuan -->
+<div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content border-0 rounded-4 shadow">
+      <div class="modal-header border-bottom-0 pb-0">
+        <h5 class="modal-title fw-bold" id="termsModalLabel">Syarat & Ketentuan TixKita</h5>
+        <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body px-4 py-4 text-start" style="color: #4a5568;">
+        
+        <div class="mb-4">
+            <h6 class="fw-bold text-dark">1. Ketentuan Penggunaan</h6>
+            <p class="small mb-0">TixKita ditawarkan kepada Anda dengan syarat Anda menerima syarat, ketentuan, dan pemberitahuan yang terkandung di sini.</p>
+        </div>
+
+        <div class="mb-4">
+            <h6 class="fw-bold text-dark">2. Pendaftaran dan Akun</h6>
+            <p class="small mb-0">Anda bertanggung jawab penuh atas kerahasiaan informasi akun Anda serta segala aktivitas yang terjadi di bawah akun Anda.</p>
+        </div>
+
+        <div class="mb-4">
+            <h6 class="fw-bold text-dark">3. Pembelian dan Refund</h6>
+            <ul class="small mb-0 ps-3">
+                <li>Tiket event yang sudah dibeli <strong>tidak dapat dikembalikan</strong>, kecuali jika event dibatalkan oleh penyelenggara.</li>
+                <li>Keputusan pengembalian dana sepenuhnya merupakan hak prerogatif TixKita.</li>
+            </ul>
+        </div>
+
+        <div class="mb-4">
+            <h6 class="fw-bold text-dark">4. Keamanan & Privasi</h6>
+            <p class="small mb-0">Informasi Anda aman bersama kami. Kami hanya menggunakan informasi pribadi Anda untuk menyelesaikan pesanan Anda dan tidak akan menyalahgunakan atau menjualnya kepada pihak lain.</p>
+        </div>
+
+        <div class="alert alert-light border-start border-4 border-primary mt-4 mb-0 small">
+            Untuk membaca syarat dan ketentuan secara lengkap, silakan kunjungi halaman <a href="{{ route('public.terms') }}" target="_blank" class="fw-bold text-decoration-none">Syarat & Ketentuan</a> kami.
+        </div>
+
+      </div>
+      <div class="modal-footer border-top-0 pt-0">
+        <button type="button" class="btn btn-primary-custom w-100 rounded-3" data-bs-dismiss="modal">Saya Mengerti & Setuju</button>
+      </div>
+    </div>
+  </div>
 </div>
 @endsection
