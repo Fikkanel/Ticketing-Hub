@@ -137,8 +137,8 @@
         
         <div class="auth-input-wrapper">
             <span class="auth-icon"><i class="fas fa-user"></i></span>
-            <input type="text" name="name" value="{{ old('name') }}" placeholder="Nama anda" required autofocus
-                   style="text-transform: uppercase;" oninput="this.value = this.value.toUpperCase()">
+            <input type="text" name="name" value="{{ old('name') }}" placeholder="Nama Anda" required autofocus
+                   oninput="this.value = this.value.toUpperCase()">
         </div>
         
         <div class="auth-input-wrapper">
