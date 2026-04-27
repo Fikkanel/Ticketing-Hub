@@ -431,16 +431,16 @@
                     <h6 class="fw-bold">Ikuti Kami</h6>
                     <div class="d-flex gap-3">
                         @if(!empty($globalSettings['social_instagram']))
-                            <a href="{{ $globalSettings['social_instagram'] }}" class="text-dark" target="_blank"><i class="fab fa-instagram fa-lg"></i></a>
+                            <a href="{{ $globalSettings['social_instagram'] }}" class="text-white" target="_blank"><i class="fab fa-instagram fa-lg"></i></a>
                         @endif
                         @if(!empty($globalSettings['social_twitter']))
-                            <a href="{{ $globalSettings['social_twitter'] }}" class="text-dark" target="_blank"><i class="fab fa-twitter fa-lg"></i></a>
+                            <a href="{{ $globalSettings['social_twitter'] }}" class="text-white" target="_blank"><i class="fab fa-twitter fa-lg"></i></a>
                         @endif
                         @if(!empty($globalSettings['social_facebook']))
-                            <a href="{{ $globalSettings['social_facebook'] }}" class="text-dark" target="_blank"><i class="fab fa-facebook fa-lg"></i></a>
+                            <a href="{{ $globalSettings['social_facebook'] }}" class="text-white" target="_blank"><i class="fab fa-facebook fa-lg"></i></a>
                         @endif
                         @if(!empty($globalSettings['social_linkedin']))
-                            <a href="{{ $globalSettings['social_linkedin'] }}" class="text-dark" target="_blank"><i class="fab fa-linkedin fa-lg"></i></a>
+                            <a href="{{ $globalSettings['social_linkedin'] }}" class="text-white" target="_blank"><i class="fab fa-linkedin fa-lg"></i></a>
                         @endif
                     </div>
                     <p class="small text-muted mt-3 mb-0">&copy; 2025 {{ $globalSettings['site_title'] ?? 'TixKita' }} Project.</p>
