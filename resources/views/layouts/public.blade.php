@@ -354,6 +354,19 @@
                 border-radius: 8px;
                 overflow: hidden;
             }
+            /* Fix cart & profile colors on mobile menu */
+            .navbar-collapse .nav-link i.fa-shopping-bag,
+            .navbar-collapse .nav-link span {
+                color: var(--header-text) !important;
+            }
+            .navbar-collapse .dropdown .d-flex.bg-light {
+                background-color: rgba(255,255,255,0.2) !important;
+                border-color: rgba(255,255,255,0.3) !important;
+            }
+            .navbar-collapse .dropdown .d-flex.bg-light i,
+            .navbar-collapse .dropdown .d-flex.bg-light span {
+                color: var(--header-text) !important;
+            }
         }
 
         /* Hide Google Translate Top Banner */
