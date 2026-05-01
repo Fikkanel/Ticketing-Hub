@@ -829,42 +829,7 @@ class PublicController extends Controller
                     break;
             }
 
-            // Jika pilih QRIS, coba gunakan Core API langsung
-            if ($paymentMethod === 'qris') {
-                try {
-                    $qrisResult = $midtransService->createQrisTransaction($order, $customer);
-                    
-                    if ($qrisResult['success']) {
-                        // Simpan QR data ke order untuk ditampilkan di invoice
-                        $order->midtrans_transaction_id = $qrisResult['transaction_id'];
-                        $order->qris_url = $qrisResult['qr_url'];
-                        $order->qris_string = $qrisResult['qr_string'];
-                        $order->save();
-                        
-                        // Clear Cart Session
-                        \Illuminate\Support\Facades\Session::forget('cart_items');
-
-                        DB::commit();
-                        
-                        if ($request->wantsJson()) {
-                            return response()->json([
-                                'success' => true,
-                                'is_free' => false,
-                                'payment_type' => 'qris',
-                                'qr_url' => $qrisResult['qr_url'],
-                                'order_id' => $order->order_id,
-                            ]);
-                        }
-                        
-                        return redirect()->route('public.invoice', $order->order_id);
-                    } else {
-                        throw new \Exception($qrisResult['error'] ?? 'QRIS transaction failed');
-                    }
-                } catch (\Exception $e) {
-                    Log::error('QRIS Core API Error: ' . $e->getMessage() . '. Fallback to Snap.');
-                    // Fallback ke Snap dengan enabledPayments yang sudah diset ['other_qris']
-                }
-            }
+            // Semua pembayaran menggunakan Snap (termasuk QRIS)
             
             // Gunakan Snap (Untuk VA, E-Wallet, atau Fallback QRIS)
             try {
