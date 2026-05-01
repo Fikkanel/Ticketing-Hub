@@ -156,10 +156,10 @@ Route::prefix('admin')->group(function () {
         Route::post('/orders/{order_id}/resend-ticket', [AdminController::class, 'resendTicket'])->name('admin.orders.resend_ticket');
         
         // MANAJEMEN SPONSORSHIP
-        Route::get('/sponsorships', function() { return "OK"; })->name('admin.sponsorships.index');
-        Route::get('/sponsorships/create', [\App\Http\Controllers\Admin\SponsorshipController::class, 'create'])->name('admin.sponsorships.create');
-        Route::post('/sponsorships', [\App\Http\Controllers\Admin\SponsorshipController::class, 'store'])->name('admin.sponsorships.store');
-        Route::get('/sponsorships/{sponsorship}/export', [\App\Http\Controllers\Admin\SponsorshipController::class, 'export'])->name('admin.sponsorships.export');
+        Route::get('/sponsorships', [\App\Http\Controllers\Admin\SponsorshipManagementController::class, 'index'])->name('admin.sponsorships.index');
+        Route::get('/sponsorships/create', [\App\Http\Controllers\Admin\SponsorshipManagementController::class, 'create'])->name('admin.sponsorships.create');
+        Route::post('/sponsorships', [\App\Http\Controllers\Admin\SponsorshipManagementController::class, 'store'])->name('admin.sponsorships.store');
+        Route::get('/sponsorships/{sponsorship}/export', [\App\Http\Controllers\Admin\SponsorshipManagementController::class, 'export'])->name('admin.sponsorships.export');
 
         // ===== Rute Diskon/Redeem Code =====
         Route::get('/discounts', [DiscountController::class, 'index'])->name('admin.discounts.index');
