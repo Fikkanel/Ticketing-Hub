@@ -815,7 +815,7 @@ class PublicController extends Controller
                     $enabledPayments = ['gopay', 'shopeepay'];
                     break;
                 case 'qris':
-                    $enabledPayments = ['other_qris'];
+                    $enabledPayments = ['gopay'];
                     break;
                 default:
                     // Fallback default (all)
@@ -823,8 +823,7 @@ class PublicController extends Controller
                         'bca_va', 'bni_va', 'bri_va', 'permata_va',
                         'cimb_va', 'bsi_va', 'danamon_va',
                         'echannel', 'other_va',
-                        'gopay', 'shopeepay',
-                        'other_qris'
+                        'gopay', 'shopeepay'
                     ];
                     break;
             }
