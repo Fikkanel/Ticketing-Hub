@@ -320,8 +320,8 @@ document.addEventListener('DOMContentLoaded', async function () {
     // 2. Render Items & Check Tax Status
     cartLoader.style.display = 'none';
     let html = '';
-    let rawSubtotal = 0;
-    const productIds = [];
+    rawSubtotal = 0;
+    productIds.length = 0;
 
     cartData.forEach(item => {
         let price = parseFloat(item.price);
