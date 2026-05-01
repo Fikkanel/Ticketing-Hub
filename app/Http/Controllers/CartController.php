@@ -24,7 +24,7 @@ class CartController extends Controller
         $productIds = [];
         
         foreach ($cart as $item) {
-            $id = $item['id'];
+            $id = (string) $item['id'];
             if (str_starts_with($id, 'bundle_')) {
                 $bundleIds[] = str_replace('bundle_', '', $id);
             } else {
@@ -44,7 +44,7 @@ class CartController extends Controller
         // --------------------------------------------------------------------
 
         foreach ($cart as $key => $item) {
-            $id = $item['id'];
+            $id = (string) $item['id'];
             $qty = intval($item['qty']);
             
             // Item Data Container
@@ -179,7 +179,7 @@ class CartController extends Controller
             $pIdsToCheck = [];
             foreach ($currentCart as $cartItem) {
                 if ($cartItem['id'] === $id) continue;
-                $otherId = $cartItem['id'];
+                $otherId = (string) $cartItem['id'];
                 if (str_starts_with($otherId, 'bundle_')) {
                     $bIdsToCheck[] = str_replace('bundle_', '', $otherId);
                 } else {
@@ -201,7 +201,7 @@ class CartController extends Controller
                 if ($cartItem['id'] === $id) continue;
 
                 // Check if other items belong to same event
-                $otherId = $cartItem['id'];
+                $otherId = (string) $cartItem['id'];
                 $otherQty = $cartItem['qty'];
                 
                 if (str_starts_with($otherId, 'bundle_')) {
