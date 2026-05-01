@@ -99,6 +99,10 @@
             background-color: #ffffff !important;
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             padding: 12px 0;
+            z-index: 1030;
+        }
+        .navbar .dropdown-menu {
+            z-index: 1050;
         }
         .navbar-brand {
             font-weight: 800;
