@@ -31,10 +31,11 @@ jobs:
           git pull origin main
           
           # Jalankan migrasi database
-          docker compose exec -T php php artisan migrate --force
+          php artisan migrate --force
           
           # Bersihkan cache Laravel agar perubahan langsung aktif
-          docker compose exec -T php php artisan optimize:clear
+          php artisan optimize:clear
 
-          # Reload Nginx untuk menerapkan perubahan konfigurasi (jika ada)
-          docker compose exec -T nginx nginx -s reload || true
+          # Reload Nginx dan PHP-FPM untuk menerapkan perubahan (jika ada)
+          sudo systemctl reload nginx || true
+          sudo systemctl reload php8.2-fpm || sudo systemctl reload php8.1-fpm || sudo systemctl reload php-fpm || true
