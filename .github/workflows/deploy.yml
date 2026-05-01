@@ -30,9 +30,11 @@ jobs:
           # Tarik kode terbaru dari GitHub ke VPS
           git pull origin main
           
+          # Jalankan migrasi database
+          docker compose exec -T php php artisan migrate --force
+          
           # Bersihkan cache Laravel agar perubahan langsung aktif
-          php artisan optimize:clear
+          docker compose exec -T php php artisan optimize:clear
 
           # Reload Nginx untuk menerapkan perubahan konfigurasi (jika ada)
-          # Asumsi menggunakan Docker sesuai panduan
           docker compose exec -T nginx nginx -s reload || true

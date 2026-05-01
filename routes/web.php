@@ -8,8 +8,6 @@ use App\Http\Controllers\PublicController;
 use App\Http\Controllers\Admin\DiscountController;
 use App\Http\Controllers\Admin\BannerController;
 
-
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -42,8 +40,6 @@ Route::get('/waiting-room/status/{event_id}', [PublicController::class, 'checkWa
 // Halaman Profil Organizer
 Route::get('/organizer/{slug}', [PublicController::class, 'showOrganizerProfile'])->name('public.organizer.profile');
 
-
-
 // Halaman Keranjang (rate limited: 30 request/menit per user)
 Route::prefix('cart')->middleware('throttle:30,1')->group(function () {
     Route::get('/data', [App\Http\Controllers\CartController::class, 'getData'])->name('cart.data');
@@ -74,10 +70,8 @@ Route::post('/payment/notification', [PublicController::class, 'handlePaymentNot
 Route::get('/payment/notification', function () {
     return redirect()->route('public.index'); // Redirect direct access to home
 });
-// Route::get('/payment/{order_id}', [PublicController::class, 'showPaymentPage'])->name('public.payment_page');
 
 Route::get('/payment-instructions/{order_id}', [PublicController::class, 'showPaymentInstructions'])->name('public.payment_instructions');
-// routes/web.php
 Route::post('/payment-confirm/{order_id}', [PublicController::class, 'simulatePaymentConfirmation'])->name('public.payment_confirm_simulate');
 Route::view('/terms-and-conditions', 'public.terms')->name('public.terms');
 
@@ -93,7 +87,6 @@ Route::middleware('guest:customer')->group(function () {
     
     Route::get('/register', [CustomerAuthController::class, 'showRegisterForm'])->name('customer.register');
     Route::post('/register', [CustomerAuthController::class, 'register'])->name('customer.register.process');
-    
 
     // Forgot Password Routes
     Route::get('/forgot-password', [CustomerAuthController::class, 'showForgotPasswordForm'])->name('customer.password.request');
@@ -129,7 +122,7 @@ Route::prefix('admin')->group(function () {
     // 2.1. LOGIN & LOGOUT (PUBLIC ACCESS)
     Route::get('/login', [AdminController::class, 'showLoginForm'])->name('admin.login');
     Route::post('/login', [AdminController::class, 'login'])->name('admin.login.post');
-    Route::post('/logout', [AdminController::class, 'logout'])->name('admin.logout'); // Tambahkan jika Anda sudah buat metode logout
+    Route::post('/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
     // Ubah Password
     Route::get('/change-password', [AdminController::class, 'showChangePasswordForm'])->name('admin.password.form');
@@ -169,3 +162,57 @@ Route::prefix('admin')->group(function () {
         Route::get('/sponsorships/{sponsorship}/export', [\App\Http\Controllers\Admin\SponsorshipController::class, 'export'])->name('admin.sponsorships.export');
 
         // ===== Rute Diskon/Redeem Code =====
+        Route::get('/discounts', [DiscountController::class, 'index'])->name('admin.discounts.index');
+        Route::post('/discounts', [DiscountController::class, 'store'])->name('admin.discounts.store');
+        Route::post('/discounts/generate', [DiscountController::class, 'generate'])->name('admin.discounts.generate');
+        Route::delete('/discounts/{discount}', [DiscountController::class, 'destroy'])->name('admin.discounts.destroy');
+
+        // MANAJEMEN BOOKING / SCANNER
+        Route::get('/bookings', [AdminController::class, 'manageBookings'])->name('admin.bookings.index');
+        Route::delete('/bookings/empty', [AdminController::class, 'emptyBookings'])->name('admin.bookings.empty');
+        
+        // EXPORT PESERTA EVENT KE EXCEL
+        Route::get('/events/{event_id}/export-participants', [AdminController::class, 'exportEventParticipants'])->name('admin.events.export_participants');
+        
+        // SCANNER PWA INTERFACE
+        Route::get('/scanner', [\App\Http\Controllers\ScannerController::class, 'index'])->name('scanner.index');
+        Route::post('/scanner/process', [\App\Http\Controllers\ScannerController::class, 'process'])->name('scanner.process');
+
+        // ===== BUNDLE MANAGEMENT (per Event) =====
+        Route::get('/events/{event}/bundles', [\App\Http\Controllers\Admin\BundleController::class, 'index'])->name('admin.bundles.index');
+        Route::get('/events/{event}/bundles/create', [\App\Http\Controllers\Admin\BundleController::class, 'create'])->name('admin.bundles.create');
+        Route::post('/events/{event}/bundles', [\App\Http\Controllers\Admin\BundleController::class, 'store'])->name('admin.bundles.store');
+        Route::get('/events/{event}/bundles/{bundle}/edit', [\App\Http\Controllers\Admin\BundleController::class, 'edit'])->name('admin.bundles.edit');
+        Route::put('/events/{event}/bundles/{bundle}', [\App\Http\Controllers\Admin\BundleController::class, 'update'])->name('admin.bundles.update');
+        Route::delete('/events/{event}/bundles/{bundle}', [\App\Http\Controllers\Admin\BundleController::class, 'destroy'])->name('admin.bundles.destroy');
+
+        // MANAJEMEN PENGATURAN (SUPERADMIN)
+        Route::get('/settings', [AdminController::class, 'settings'])->name('admin.settings');
+        Route::put('/settings', [AdminController::class, 'updateSettings'])->name('admin.settings.update');
+        
+        // PENGATURAN TRANSAKSI (SUPERADMIN)
+        Route::get('/transaction-settings', [AdminController::class, 'transactionSettings'])->name('admin.transaction.settings');
+        Route::put('/transaction-settings', [AdminController::class, 'updateTransactionSettings'])->name('admin.transaction.settings.update');
+
+        Route::delete('/settings/reset-transactions', [AdminController::class, 'resetTransactions'])->name('admin.settings.reset_transactions');
+
+        // MANAJEMEN KATEGORI EVENT (SUPERADMIN)
+        Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class)->names('admin.categories');
+
+        // MANAJEMEN BANNER
+        Route::resource('banners', BannerController::class)->names('admin.banners');
+
+        // MANAJEMEN USER ADMIN (SUPERADMIN)
+        Route::resource('users', \App\Http\Controllers\AdminUserController::class)->except(['show'])->names('admin.users');
+        Route::put('users/{user}/toggle', [\App\Http\Controllers\AdminUserController::class, 'toggleStatus'])->name('admin.users.toggle');
+
+        // MANAJEMEN CUSTOMER (SUPERADMIN)
+        Route::resource('customers', \App\Http\Controllers\Admin\CustomerController::class)->only(['index', 'show', 'destroy'])->names('admin.customers');
+
+        // ORGANIZER PROFILE
+        Route::get('/organizer-profile', [AdminController::class, 'showOrganizerProfileForm'])->name('admin.organizer.profile');
+        Route::put('/organizer-profile', [AdminController::class, 'updateOrganizerProfile'])->name('admin.organizer.profile.update');
+
+    }); // END middleware('auth')
+    
+});
