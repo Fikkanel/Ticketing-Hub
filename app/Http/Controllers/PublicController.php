@@ -254,6 +254,7 @@ class PublicController extends Controller
 
     public function checkTaxStatus(Request $request)
     {
+        $startTime = microtime(true);
         try {
             $productIds = $request->input('product_ids', []);
             
@@ -369,6 +370,9 @@ class PublicController extends Controller
                 }
             }
             
+            $executionTime = microtime(true) - $startTime;
+            \Illuminate\Support\Facades\Log::info("PublicController@checkTaxStatus execution time: " . round($executionTime * 1000, 2) . "ms");
+
             return response()->json([
                 'apply_tax' => $hasRegular,
                 'allowed_channels' => $allowedChannels,

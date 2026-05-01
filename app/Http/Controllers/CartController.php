@@ -14,11 +14,11 @@ class CartController extends Controller
      */
     public function getData()
     {
+        $startTime = microtime(true);
         $cart = Session::get('cart_items', []);
         $enrichedCart = [];
         $totalQty = 0;
         $subtotal = 0;
-
         // --- OPTIMIZATION: Fetch all products and bundles in single queries ---
         $bundleIds = [];
         $productIds = [];
@@ -112,6 +112,9 @@ class CartController extends Controller
 
         // Save back to session in case of cleanup
         Session::put('cart_items', $cart);
+
+        $executionTime = microtime(true) - $startTime;
+        \Illuminate\Support\Facades\Log::info("CartController@getData execution time: " . round($executionTime * 1000, 2) . "ms");
 
         return response()->json([
             'items' => array_values($enrichedCart),

@@ -29,10 +29,18 @@ class AppServiceProvider extends ServiceProvider
 
         Paginator::useBootstrapFive();
 
-        // Share settings globally
-        if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
-            $settings = \App\Models\Setting::all()->pluck('value', 'key')->toArray();
+        // Share settings globally - Cached for 1 hour to reduce DB overhead
+        try {
+            $settings = \Illuminate\Support\Facades\Cache::remember('global_settings', 3600, function () {
+                if (\Illuminate\Support\Facades\Schema::hasTable('settings')) {
+                    return \App\Models\Setting::all()->pluck('value', 'key')->toArray();
+                }
+                return [];
+            });
             \Illuminate\Support\Facades\View::share('globalSettings', $settings);
+        } catch (\Exception $e) {
+            \Illuminate\Support\Facades\View::share('globalSettings', []);
+            \Illuminate\Support\Facades\Log::warning('AppServiceProvider: Failed to load settings. ' . $e->getMessage());
         }
     }
 }
