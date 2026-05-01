@@ -21,6 +21,7 @@ class Event extends Model
         'category_id',  // Kategori event (MUSIC, SPORT, dll)
         'judul', 
         'deskripsi', 
+        'terms_conditions',
         'tgl_mulai', 
         'tgl_selesai', 
         'status', 
@@ -196,5 +197,23 @@ class Event extends Model
     public function bundles()
     {
         return $this->hasMany(Bundle::class, 'event_id', 'event_id');
+    }
+
+    /**
+     * Relasi ke Lineup (One-to-Many).
+     * Satu event bisa memiliki banyak lineup (artis pengisi acara).
+     */
+    public function lineups()
+    {
+        return $this->hasMany(EventLineup::class, 'event_id', 'event_id');
+    }
+
+    /**
+     * Relasi ke Fasilitas (One-to-Many).
+     * Satu event bisa memiliki banyak fasilitas.
+     */
+    public function facilities()
+    {
+        return $this->hasMany(EventFacility::class, 'event_id', 'event_id');
     }
 }

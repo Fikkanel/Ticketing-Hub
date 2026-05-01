@@ -71,9 +71,129 @@
             <div class="card border-0 shadow-sm rounded-4 mb-4">
                 <div class="card-body p-4">
                     <h5 class="fw-bold mb-3">Tentang Event Ini</h5>
-                    <p class="text-muted" style="line-height: 1.8; white-space: pre-line;">
-                        {{ $event->deskripsi }}
-                    </p>
+                    <div class="position-relative">
+                        <div id="event-desc-content" class="text-muted markdown-content" style="line-height: 1.8; max-height: 150px; overflow: hidden; transition: max-height 0.3s ease;">
+                            {!! Str::markdown($event->deskripsi ?? '') !!}
+                        </div>
+                        <div id="event-desc-fade" style="position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1));"></div>
+                    </div>
+                    <button id="btn-toggle-desc" class="btn btn-link text-primary-custom text-decoration-none p-0 mt-1 fw-bold" style="display: none;" onclick="toggleEventDesc()">Tampilkan lebih banyak</button>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            const content = document.getElementById('event-desc-content');
+                            const fade = document.getElementById('event-desc-fade');
+                            const btn = document.getElementById('btn-toggle-desc');
+                            
+                            // Check if content exceeds the max-height
+                            if (content.scrollHeight > 150) {
+                                btn.style.display = 'inline-block';
+                            } else {
+                                fade.style.display = 'none';
+                            }
+                            
+                            window.toggleEventDesc = function() {
+                                if (content.style.maxHeight === '150px') {
+                                    content.style.maxHeight = content.scrollHeight + 'px';
+                                    fade.style.display = 'none';
+                                    btn.innerText = 'Tampilkan lebih sedikit';
+                                } else {
+                                    content.style.maxHeight = '150px';
+                                    fade.style.display = 'block';
+                                    btn.innerText = 'Tampilkan lebih banyak';
+                                }
+                            };
+                        });
+                    </script>
+
+                    {{-- LINEUP ARTIS --}}
+                    @if(isset($event->lineups) && $event->lineups->count() > 0)
+                    <hr class="my-4 border-dashed">
+                    <h5 class="fw-bold mb-3">Lineup</h5>
+                    <div class="row g-3">
+                        @foreach($event->lineups as $lineup)
+                        <div class="col-12 col-md-4">
+                            <div class="card h-100 border rounded-3 overflow-hidden text-start hover-lift" style="transition: transform 0.2s, box-shadow 0.2s; border-color: #eaeaea;">
+                                @if($lineup->instagram_url)
+                                <a href="{{ $lineup->instagram_url }}" target="_blank" class="text-decoration-none text-dark d-flex align-items-center p-2 stretched-link">
+                                @else
+                                <div class="d-flex align-items-center p-2 text-dark h-100">
+                                @endif
+                                
+                                    {{-- Foto --}}
+                                    <div class="flex-shrink-0" style="width: 70px; height: 70px;">
+                                        @if($lineup->image_path)
+                                            <img src="{{ asset('storage/' . $lineup->image_path) }}" class="object-fit-cover w-100 h-100 rounded" alt="{{ $lineup->name }}">
+                                        @else
+                                            <div class="d-flex align-items-center justify-content-center w-100 h-100 bg-light rounded text-muted">
+                                                <i class="fas fa-user fa-lg"></i>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    
+                                    {{-- Nama --}}
+                                    <div class="flex-grow-1 ms-3">
+                                        <h6 class="fw-bold mb-0 text-truncate">{{ $lineup->name }}</h6>
+                                    </div>
+                                    
+                                    {{-- Ikon --}}
+                                    @if($lineup->instagram_url)
+                                    <div class="ms-2 pe-2 text-primary" style="font-size: 1.1rem;">
+                                        <i class="fas fa-arrow-right" style="transform: rotate(-45deg);"></i>
+                                    </div>
+                                    @endif
+
+                                @if($lineup->instagram_url)
+                                </a>
+                                @else
+                                </div>
+                                @endif
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                    
+                    <style>
+                        .hover-lift:hover {
+                            transform: translateY(-3px);
+                            box-shadow: 0 5px 15px rgba(0,0,0,0.08) !important;
+                        }
+                        .object-fit-cover {
+                            object-fit: cover;
+                        }
+                    </style>
+                    @endif
+
+                    {{-- FASILITAS EVENT --}}
+                    @if(isset($event->facilities) && $event->facilities->count() > 0)
+                    <hr class="my-4 border-dashed">
+                    <h5 class="fw-bold mb-3">Fasilitas</h5>
+                    <div class="row g-3">
+                        @foreach($event->facilities as $facility)
+                        <div class="col-6 col-md-3">
+                            <div class="card h-100 border rounded-3 overflow-hidden text-start hover-lift" style="transition: transform 0.2s, box-shadow 0.2s; border-color: #eaeaea;">
+                                <div class="d-flex align-items-center p-2 text-dark h-100">
+                                    {{-- Ikon --}}
+                                    <div class="flex-shrink-0 d-flex align-items-center justify-content-center rounded text-primary" style="width: 35px; height: 35px; background-color: transparent;">
+                                        <i class="{{ $facility->image_path ?? 'fas fa-check-circle' }} fa-lg"></i>
+                                    </div>
+                                    
+                                    {{-- Nama Fasilitas --}}
+                                    <div class="flex-grow-1 ms-2">
+                                        <div class="fw-bold text-truncate" style="font-size: 0.85rem;">{{ $facility->name }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                    
+                    <style>
+                        .object-fit-contain {
+                            object-fit: contain;
+                        }
+                    </style>
+                    @endif
 
                     {{-- GOOGLE MAPS IFRAME --}}
                     @if(isset($event->location->map_link) && !empty($event->location->map_link))
@@ -102,15 +222,62 @@
                     @endif
 
                     <h5 class="fw-bold mb-3">Syarat & Ketentuan</h5>
-                    <ul class="text-muted small ps-3 mb-0" style="line-height: 1.6;">
-                        <li>E-Ticket yang sudah dibeli tidak dapat ditukar atau dikembalikan (non-refundable).</li>
-                        <li>Harap membawa kartu identitas yang berlaku saat penukaran tiket fisik.</li>
-                        <li>Dilarang membawa senjata tajam, obat-obatan terlarang, dan hewan peliharaan.</li>
-                        <li>Panitia berhak menolak pengunjung yang tidak mematuhi protokol keamanan.</li>
-                    </ul>
+                    <div class="position-relative">
+                        <div id="tnc-desc-content" class="text-muted small mb-0 markdown-content" style="line-height: 1.6; max-height: 150px; overflow: hidden; transition: max-height 0.3s ease;">
+                            @if(!empty($event->terms_conditions))
+                                {!! Str::markdown($event->terms_conditions) !!}
+                            @else
+                                <ul class="ps-3 mb-0">
+                                    <li>E-Ticket yang sudah dibeli tidak dapat ditukar atau dikembalikan (non-refundable).</li>
+                                    <li>Harap membawa kartu identitas yang berlaku saat penukaran tiket fisik.</li>
+                                    <li>Dilarang membawa senjata tajam, obat-obatan terlarang, dan hewan peliharaan.</li>
+                                    <li>Panitia berhak menolak pengunjung yang tidak mematuhi protokol keamanan.</li>
+                                </ul>
+                            @endif
+                        </div>
+                        <div id="tnc-desc-fade" style="position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1)); pointer-events: none;"></div>
+                    </div>
+                    <button id="btn-toggle-tnc" class="btn btn-link text-primary-custom text-decoration-none p-0 mt-1 fw-bold" style="display: none;" onclick="toggleTncDesc()">Baca selengkapnya</button>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            const tncContent = document.getElementById('tnc-desc-content');
+                            const tncFade = document.getElementById('tnc-desc-fade');
+                            const tncBtn = document.getElementById('btn-toggle-tnc');
+                            
+                            // Check if content exceeds the max-height
+                            if (tncContent.scrollHeight > 150) {
+                                tncBtn.style.display = 'inline-block';
+                            } else {
+                                tncFade.style.display = 'none';
+                            }
+                            
+                            window.toggleTncDesc = function() {
+                                if (tncContent.style.maxHeight === '150px') {
+                                    tncContent.style.maxHeight = tncContent.scrollHeight + 'px';
+                                    tncFade.style.display = 'none';
+                                    tncBtn.innerText = 'Tutup selengkapnya';
+                                } else {
+                                    tncContent.style.maxHeight = '150px';
+                                    tncFade.style.display = 'block';
+                                    tncBtn.innerText = 'Baca selengkapnya';
+                                }
+                            };
+                        });
+                    </script>
                 </div>
             </div>
         </div>
+        
+        <style>
+            .markdown-content p:last-child {
+                margin-bottom: 0;
+            }
+            .markdown-content ul, .markdown-content ol {
+                padding-left: 1.25rem;
+                margin-bottom: 0.5rem;
+            }
+        </style>
 
         {{-- KOLOM KANAN: Sticky Sidebar Pembelian --}}
         <div class="col-lg-4">

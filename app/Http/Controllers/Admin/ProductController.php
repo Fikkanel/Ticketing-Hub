@@ -101,6 +101,8 @@ class ProductController extends Controller
         if ($validatedData['tipe'] === 'Seminar') {
             $validatedData['kategori_tiket'] = null;
         }
+        
+        $validatedData['is_sponsorship'] = $request->has('is_sponsorship') ? 1 : 0;
 
         Product::create($validatedData);
 
@@ -165,6 +167,8 @@ class ProductController extends Controller
         if ($validatedData['tipe'] === 'Seminar') {
             $validatedData['kategori_tiket'] = null;
         }
+        
+        $validatedData['is_sponsorship'] = $request->has('is_sponsorship') ? 1 : 0;
 
         $product->update($validatedData);
 

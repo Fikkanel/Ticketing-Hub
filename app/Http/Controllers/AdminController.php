@@ -471,6 +471,38 @@ class AdminController extends Controller
             $event->categories()->sync($request->categories);
         }
 
+        // Save Lineups
+        if ($request->has('lineups') && is_array($request->lineups)) {
+            foreach ($request->lineups as $index => $lineupData) {
+                if (!empty($lineupData['name'])) {
+                    $imagePath = null;
+                    if ($request->hasFile("lineups.{$index}.image_file")) {
+                        $imagePath = $request->file("lineups.{$index}.image_file")->store('events/lineups', 'public');
+                    }
+
+                    \App\Models\EventLineup::create([
+                        'event_id' => $event->event_id,
+                        'name' => $lineupData['name'],
+                        'instagram_url' => $lineupData['instagram_url'] ?? null,
+                        'image_path' => $imagePath,
+                    ]);
+                }
+            }
+        }
+
+        // Save Facilities
+        if ($request->has('facilities') && is_array($request->facilities)) {
+            foreach ($request->facilities as $facilityData) {
+                if (!empty($facilityData['name'])) {
+                    \App\Models\EventFacility::create([
+                        'event_id' => $event->event_id,
+                        'name' => $facilityData['name'],
+                        'image_path' => $facilityData['image_path'] ?? 'fas fa-check-circle',
+                    ]);
+                }
+            }
+        }
+
         return redirect()->route('admin.events')->with('success', 'Event baru berhasil ditambahkan!');
     }
 
@@ -582,6 +614,95 @@ class AdminController extends Controller
         
         // Sync categories (many-to-many)
         $event->categories()->sync($request->categories ?? []);
+        
+        // Sync Lineups
+        if ($request->has('lineups') && is_array($request->lineups)) {
+            $keptLineupIds = [];
+            foreach ($request->lineups as $index => $lineupData) {
+                if (!empty($lineupData['name'])) {
+                    $lineup = null;
+                    if (!empty($lineupData['id'])) {
+                        $lineup = \App\Models\EventLineup::find($lineupData['id']);
+                    }
+                    
+                    if (!$lineup) {
+                        $lineup = new \App\Models\EventLineup();
+                        $lineup->event_id = $event->event_id;
+                    }
+
+                    $lineup->name = $lineupData['name'];
+                    $lineup->instagram_url = $lineupData['instagram_url'] ?? null;
+
+                    if ($request->hasFile("lineups.{$index}.image_file")) {
+                        if ($lineup->image_path) {
+                            Storage::disk('public')->delete($lineup->image_path);
+                        }
+                        $lineup->image_path = $request->file("lineups.{$index}.image_file")->store('events/lineups', 'public');
+                    }
+                    
+                    $lineup->save();
+                    $keptLineupIds[] = $lineup->id;
+                }
+            }
+            
+            // Delete removed lineups
+            $lineupsToDelete = \App\Models\EventLineup::where('event_id', $event->event_id)
+                                ->whereNotIn('id', $keptLineupIds)->get();
+            foreach ($lineupsToDelete as $toDelete) {
+                if ($toDelete->image_path) {
+                    Storage::disk('public')->delete($toDelete->image_path);
+                }
+                $toDelete->delete();
+            }
+        } else {
+            // Delete all if empty
+            $lineupsToDelete = \App\Models\EventLineup::where('event_id', $event->event_id)->get();
+            foreach ($lineupsToDelete as $toDelete) {
+                if ($toDelete->image_path) {
+                    Storage::disk('public')->delete($toDelete->image_path);
+                }
+                $toDelete->delete();
+            }
+        }
+        
+        // Sync Facilities
+        if ($request->has('facilities') && is_array($request->facilities)) {
+            $keptFacilityIds = [];
+            foreach ($request->facilities as $facilityData) {
+                if (!empty($facilityData['name'])) {
+                    $facility = null;
+                    if (!empty($facilityData['id'])) {
+                        $facility = \App\Models\EventFacility::find($facilityData['id']);
+                    }
+                    
+                    if (!$facility) {
+                        $facility = new \App\Models\EventFacility();
+                        $facility->event_id = $event->event_id;
+                    }
+
+                    $facility->name = $facilityData['name'];
+                    if (isset($facilityData['image_path'])) {
+                        $facility->image_path = $facilityData['image_path'];
+                    }
+
+                    $facility->save();
+                    $keptFacilityIds[] = $facility->id;
+                }
+            }
+            
+            // Delete removed facilities
+            $facilitiesToDelete = \App\Models\EventFacility::where('event_id', $event->event_id)
+                                ->whereNotIn('id', $keptFacilityIds)->get();
+            foreach ($facilitiesToDelete as $toDelete) {
+                $toDelete->delete();
+            }
+        } else {
+            // Delete all if empty
+            $facilitiesToDelete = \App\Models\EventFacility::where('event_id', $event->event_id)->get();
+            foreach ($facilitiesToDelete as $toDelete) {
+                $toDelete->delete();
+            }
+        }
         
         return redirect()->route('admin.events')->with('success', 'Event berhasil diperbarui!');
     }

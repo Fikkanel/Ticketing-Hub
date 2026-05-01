@@ -69,6 +69,15 @@
                     @error('event_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
 
+                {{-- 6. Tiket Sponsorship --}}
+                <div class="mb-3 form-check form-switch mt-4">
+                    <input class="form-check-input" type="checkbox" id="is_sponsorship" name="is_sponsorship" value="1" {{ old('is_sponsorship') ? 'checked' : '' }}>
+                    <label class="form-check-label fw-bold" for="is_sponsorship">
+                        Jadikan Tiket Sponsorship
+                        <small class="d-block text-muted fw-normal mt-1"><i class="fas fa-info-circle text-info"></i> Jika dicentang, tiket/kategori ini <b>tidak akan ditampilkan</b> pada form pembelian publik. Hanya bisa diakses via menu Sponsorship di Admin.</small>
+                    </label>
+                </div>
+
             </div>
         </div>
 

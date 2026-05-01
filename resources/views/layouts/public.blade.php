@@ -50,33 +50,30 @@
         }
 
         /* Utility Classes for Dynamic Colors */
-        .text-primary-custom { color: var(--primary-color) !important; }
-        .text-secondary-custom { color: var(--secondary-color) !important; }
-        .bg-primary-custom { background-color: var(--primary-color) !important; }
-        .bg-secondary-custom { background-color: var(--secondary-color) !important; }
+        .text-primary { color: var(--primary-color) !important; }
+        .text-secondary { color: var(--secondary-color) !important; }
+        .bg-primary { background-color: var(--primary-color) !important; }
+        .bg-secondary { background-color: var(--secondary-color) !important; }
         
-        .btn-primary-custom {
-            background-color: var(--primary-color);
-            border-color: var(--primary-color);
-            color: white; /* Asumsi teks putih di atas warna utama */
-            border-radius: 8px;
-            padding: 8px 20px;
-            font-weight: 600;
+        .btn-primary {
+            background-color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+            color: white !important;
         }
-        .btn-primary-custom:hover, .btn-primary-custom:focus, .btn-primary-custom:active {
-            background-color: var(--secondary-color);
-            border-color: var(--secondary-color);
-            color: white;
+        .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+            background-color: var(--secondary-color) !important;
+            border-color: var(--secondary-color) !important;
+            color: white !important;
         }
 
-        .btn-outline-primary-custom {
-            color: var(--primary-color);
-            border-color: var(--primary-color);
-            background-color: transparent;
+        .btn-outline-primary {
+            color: var(--primary-color) !important;
+            border-color: var(--primary-color) !important;
+            background-color: transparent !important;
         }
-        .btn-outline-primary-custom:hover {
-            background-color: var(--primary-color);
-            color: white;
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color) !important;
+            color: white !important;
         }
 
         /* Navbar Loket Style */

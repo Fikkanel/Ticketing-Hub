@@ -17,3 +17,5 @@ yarn-error.log
 /.vscode
 /CODEFORGE REPORT
 panduan_migrasi_vps.md
+/storage/logs
+/backup

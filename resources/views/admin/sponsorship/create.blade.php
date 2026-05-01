@@ -18,7 +18,7 @@
                     <h6 class="m-0 font-weight-bold text-primary">Form Generate</h6>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('admin.sponsorships.store') }}" method="POST">
+                    <form action="{{ route('admin.sponsorships.store') }}" method="POST" id="generateForm">
                         @csrf
                         <div class="form-group mb-3">
                             <label for="name">Nama Sponsorship (Misal: BRI, Mandiri, dsb)</label>
@@ -63,7 +63,7 @@
                             <small class="text-muted">Maksimal 10.000 tiket per generate.</small>
                         </div>
 
-                        <button type="submit" class="btn btn-primary btn-block py-2 fw-bold" onclick="return confirm('Apakah Anda yakin ingin men-generate tiket sebanyak ini? Proses ini tidak dapat dibatalkan.')">
+                        <button type="button" class="btn btn-primary btn-block py-2 fw-bold" onclick="confirmGenerate()">
                             <i class="fas fa-magic me-2"></i> Generate Tiket Sekarang
                         </button>
                     </form>
@@ -72,7 +72,7 @@
         </div>
         
         <div class="col-lg-6">
-            <div class="card bg-info text-white shadow">
+            <div class="card bg-secondary text-white shadow">
                 <div class="card-body">
                     <h5 class="font-weight-bold"><i class="fas fa-info-circle me-2"></i> Informasi Fitur</h5>
                     <p class="mb-0">
@@ -123,5 +123,38 @@
             // Fallback: If API doesn't return JSON, try to handle or show error
         });
     });
+
+    function confirmGenerate() {
+        // Validasi form manual karena button type="button" tidak otomatis men-trigger validasi HTML5
+        const form = document.getElementById('generateForm');
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        Swal.fire({
+            title: 'Apakah Anda yakin?',
+            text: "Ingin men-generate tiket sebanyak ini? Proses ini tidak dapat dibatalkan.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: 'var(--admin-primary)',
+            cancelButtonColor: 'var(--admin-secondary)',
+            confirmButtonText: 'Ya, Generate!',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // Tampilkan loading state agar tombol tidak diklik berkali-kali
+                Swal.fire({
+                    title: 'Memproses...',
+                    text: 'Sedang men-generate tiket, mohon tunggu sebentar.',
+                    allowOutsideClick: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                form.submit();
+            }
+        });
+    }
 </script>
 @endsection

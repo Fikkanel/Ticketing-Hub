@@ -122,6 +122,120 @@
                                     <textarea class="form-control @error('deskripsi') is-invalid @enderror" name="deskripsi" rows="4">{{ old('deskripsi', $event->deskripsi) }}</textarea>
                                     @error('deskripsi')<div class="invalid-feedback">{{ $message }}</div>@enderror
                                 </div>
+
+                                {{-- Syarat & Ketentuan --}}
+                                <div class="mb-3">
+                                    <label class="small fw-bold text-muted">SYARAT & KETENTUAN <span class="text-muted fw-normal">(Opsional)</span></label>
+                                    <textarea class="form-control @error('terms_conditions') is-invalid @enderror" name="terms_conditions" rows="4" placeholder="Jika dikosongkan, akan menggunakan S&K bawaan (default).">{{ old('terms_conditions', $event->terms_conditions) }}</textarea>
+                                    @error('terms_conditions')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Card: Lineup Artis --}}
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 bg-white border-left-primary" style="border-left: 4px solid var(--admin-primary);">
+                                <h6 class="m-0 fw-bold text-primary">Lineup Artis / Pengisi Acara</h6>
+                                <small class="text-muted">Opsional. Tambahkan artis yang akan tampil di event ini.</small>
+                            </div>
+                            <div class="card-body">
+                                <div id="lineup-container">
+                                    @php
+                                        $lineups = $event->lineups ?? [];
+                                        $lineupCount = count($lineups);
+                                    @endphp
+                                    @foreach($lineups as $index => $lineup)
+                                    <div class="lineup-row border rounded p-3 mb-3 bg-light position-relative">
+                                        <button type="button" class="btn btn-sm btn-danger position-absolute" style="top: -10px; right: -10px; border-radius: 50%;" onclick="this.closest('.lineup-row').remove()">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                        <input type="hidden" name="lineups[{{ $index }}][id]" value="{{ $lineup->id }}">
+                                        <div class="row g-2">
+                                            <div class="col-md-6 mb-2">
+                                                <label class="small fw-bold text-muted">Nama Artis *</label>
+                                                <input type="text" class="form-control form-control-sm" name="lineups[{{ $index }}][name]" value="{{ $lineup->name }}" required>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <label class="small fw-bold text-muted">Link Instagram (Opsional)</label>
+                                                <input type="url" class="form-control form-control-sm" name="lineups[{{ $index }}][instagram_url]" value="{{ $lineup->instagram_url }}" placeholder="https://instagram.com/...">
+                                            </div>
+                                            <div class="col-12">
+                                                <label class="small fw-bold text-muted">Foto Artis (Opsional, 1:1 direkomendasikan)</label>
+                                                @if($lineup->image_path)
+                                                <div class="mb-2">
+                                                    <img src="{{ asset('storage/' . $lineup->image_path) }}" class="img-thumbnail" style="height: 50px; width: 50px; object-fit: cover; border-radius: 50%;">
+                                                </div>
+                                                @endif
+                                                <input type="file" class="form-control form-control-sm" name="lineups[{{ $index }}][image_file]" accept="image/*">
+                                                <small class="text-muted">Biarkan kosong jika tidak ingin mengubah foto</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <button type="button" class="btn btn-outline-primary btn-sm mt-2" onclick="addLineupRow()">
+                                    <i class="fas fa-plus me-1"></i> Tambah Artis
+                                </button>
+                            </div>
+                        </div>
+
+                        {{-- Card: Fasilitas Event --}}
+                        <div class="card shadow mb-4">
+                            <div class="card-header py-3 bg-white border-left-info" style="border-left: 4px solid #36b9cc;">
+                                <h6 class="m-0 fw-bold text-info">Fasilitas Event</h6>
+                                <small class="text-muted">Opsional. Tambahkan fasilitas yang tersedia (contoh: Area Parkir, Toilet).</small>
+                            </div>
+                            <div class="card-body">
+                                <div id="facility-container">
+                                    @php
+                                        $facilities = $event->facilities ?? [];
+                                        $facilityCount = count($facilities);
+                                    @endphp
+                                    @foreach($facilities as $index => $facility)
+                                    <div class="facility-row border rounded p-3 mb-3 bg-light position-relative">
+                                        <button type="button" class="btn btn-sm btn-danger position-absolute" style="top: -10px; right: -10px; border-radius: 50%;" onclick="this.closest('.facility-row').remove()">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                        <input type="hidden" name="facilities[{{ $index }}][id]" value="{{ $facility->id }}">
+                                        <div class="row g-2">
+                                            <div class="col-md-6 mb-2">
+                                                <label class="small fw-bold text-muted">Nama Fasilitas *</label>
+                                                <input type="text" class="form-control form-control-sm" name="facilities[{{ $index }}][name]" value="{{ $facility->name }}" required>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <label class="small fw-bold text-muted">Ikon/Gambar (Opsional)</label>
+                                                <div class="d-flex align-items-center">
+                                                    @if($facility->image_path)
+                                                        <div class="me-2 text-primary fs-4">
+                                                            <i class="{{ $facility->image_path }}"></i>
+                                                        </div>
+                                                    @endif
+                                                    <select class="form-select form-select-sm" name="facilities[{{ $index }}][image_path]">
+                                                        <option value="fas fa-check-circle" {{ $facility->image_path == 'fas fa-check-circle' ? 'selected' : '' }}>Pilih Ikon (Default: Centang)</option>
+                                                        <option value="fas fa-wheelchair" {{ $facility->image_path == 'fas fa-wheelchair' ? 'selected' : '' }}>Akses Disabilitas</option>
+                                                        <option value="fas fa-ambulance" {{ $facility->image_path == 'fas fa-ambulance' ? 'selected' : '' }}>Ambulance</option>
+                                                        <option value="fas fa-parking" {{ $facility->image_path == 'fas fa-parking' ? 'selected' : '' }}>Area Parkir</option>
+                                                        <option value="fas fa-info-circle" {{ $facility->image_path == 'fas fa-info-circle' ? 'selected' : '' }}>Help Desk / Informasi</option>
+                                                        <option value="fas fa-store" {{ $facility->image_path == 'fas fa-store' ? 'selected' : '' }}>Merchandise Area</option>
+                                                        <option value="fas fa-camera" {{ $facility->image_path == 'fas fa-camera' ? 'selected' : '' }}>Photo Booth</option>
+                                                        <option value="fas fa-baby" {{ $facility->image_path == 'fas fa-baby' ? 'selected' : '' }}>Ruang Laktasi</option>
+                                                        <option value="fas fa-chair" {{ $facility->image_path == 'fas fa-chair' ? 'selected' : '' }}>Seating Area / Tempat Duduk</option>
+                                                        <option value="fas fa-music" {{ $facility->image_path == 'fas fa-music' ? 'selected' : '' }}>Stage Utama / Hiburan</option>
+                                                        <option value="fas fa-praying-hands" {{ $facility->image_path == 'fas fa-praying-hands' ? 'selected' : '' }}>Tempat Ibadah / Mushola</option>
+                                                        <option value="fas fa-utensils" {{ $facility->image_path == 'fas fa-utensils' ? 'selected' : '' }}>Tenant Makanan / F&B</option>
+                                                        <option value="fas fa-restroom" {{ $facility->image_path == 'fas fa-restroom' ? 'selected' : '' }}>Toilet</option>
+                                                        <option value="fas fa-wifi" {{ $facility->image_path == 'fas fa-wifi' ? 'selected' : '' }}>WiFi Area</option>
+                                                        <option value="fas fa-medkit" {{ $facility->image_path == 'fas fa-medkit' ? 'selected' : '' }}>Posko Kesehatan / P3K</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @endforeach
+                                </div>
+                                <button type="button" class="btn btn-outline-info btn-sm mt-2" onclick="addFacilityRow()">
+                                    <i class="fas fa-plus me-1"></i> Tambah Fasilitas
+                                </button>
                             </div>
                         </div>
 
@@ -481,6 +595,79 @@ function addCustomField() {
     `;
     container.insertAdjacentHTML('beforeend', html);
     customFieldIndex++;
+}
+</script>
+<script>
+let lineupIndex = {{ isset($lineupCount) ? $lineupCount : 0 }};
+
+function addLineupRow() {
+    const container = document.getElementById('lineup-container');
+    const html = `
+        <div class="lineup-row border rounded p-3 mb-3 bg-light position-relative">
+            <button type="button" class="btn btn-sm btn-danger position-absolute" style="top: -10px; right: -10px; border-radius: 50%;" onclick="this.closest('.lineup-row').remove()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="row g-2">
+                <div class="col-md-6 mb-2">
+                    <label class="small fw-bold text-muted">Nama Artis *</label>
+                    <input type="text" class="form-control form-control-sm" name="lineups[${lineupIndex}][name]" required>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <label class="small fw-bold text-muted">Link Instagram (Opsional)</label>
+                    <input type="url" class="form-control form-control-sm" name="lineups[${lineupIndex}][instagram_url]" placeholder="https://instagram.com/...">
+                </div>
+                <div class="col-12">
+                    <label class="small fw-bold text-muted">Foto Artis (Opsional, 1:1 direkomendasikan)</label>
+                    <input type="file" class="form-control form-control-sm" name="lineups[${lineupIndex}][image_file]" accept="image/*">
+                </div>
+            </div>
+        </div>
+    `;
+    container.insertAdjacentHTML('beforeend', html);
+    lineupIndex++;
+}
+</script>
+
+<script>
+let facilityIndex = {{ isset($facilityCount) ? $facilityCount : 0 }};
+
+function addFacilityRow() {
+    const container = document.getElementById('facility-container');
+    const html = `
+        <div class="facility-row border rounded p-3 mb-3 bg-light position-relative">
+            <button type="button" class="btn btn-sm btn-danger position-absolute" style="top: -10px; right: -10px; border-radius: 50%;" onclick="this.closest('.facility-row').remove()">
+                <i class="fas fa-times"></i>
+            </button>
+            <div class="row g-2">
+                <div class="col-md-6 mb-2">
+                    <label class="small fw-bold text-muted">Nama Fasilitas *</label>
+                    <input type="text" class="form-control form-control-sm" name="facilities[${facilityIndex}][name]" placeholder="Misal: Area Parkir" required>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <label class="small fw-bold text-muted">Ikon/Gambar (Opsional)</label>
+                    <select class="form-select form-select-sm" name="facilities[${facilityIndex}][image_path]">
+                        <option value="fas fa-check-circle">Pilih Ikon (Default: Centang)</option>
+                        <option value="fas fa-wheelchair">Akses Disabilitas</option>
+                        <option value="fas fa-ambulance">Ambulance</option>
+                        <option value="fas fa-parking">Area Parkir</option>
+                        <option value="fas fa-info-circle">Help Desk / Informasi</option>
+                        <option value="fas fa-store">Merchandise Area</option>
+                        <option value="fas fa-camera">Photo Booth</option>
+                        <option value="fas fa-baby">Ruang Laktasi</option>
+                        <option value="fas fa-chair">Seating Area / Tempat Duduk</option>
+                        <option value="fas fa-music">Stage Utama / Hiburan</option>
+                        <option value="fas fa-praying-hands">Tempat Ibadah / Mushola</option>
+                        <option value="fas fa-utensils">Tenant Makanan / F&B</option>
+                        <option value="fas fa-restroom">Toilet</option>
+                        <option value="fas fa-wifi">WiFi Area</option>
+                        <option value="fas fa-medkit">Posko Kesehatan / P3K</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    `;
+    container.insertAdjacentHTML('beforeend', html);
+    facilityIndex++;
 }
 </script>
 @endsection

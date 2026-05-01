@@ -31,13 +31,33 @@
             --admin-primary: {{ $primaryColor }};
             --admin-secondary: {{ $secondaryColor }};
         }
-        /* Override Bootstrap primary colors */
+        /* Override Bootstrap primary & secondary colors */
         .text-primary { color: var(--admin-primary) !important; }
-        .btn-primary { background-color: var(--admin-primary) !important; border-color: var(--admin-primary) !important; }
-        .btn-primary:hover { background-color: var(--admin-secondary) !important; border-color: var(--admin-secondary) !important; }
-        .btn-outline-primary { color: var(--admin-primary) !important; border-color: var(--admin-primary) !important; }
-        .btn-outline-primary:hover { background-color: var(--admin-primary) !important; border-color: var(--admin-primary) !important; color: #fff !important; }
+        .text-secondary { color: var(--admin-secondary) !important; }
+        
         .bg-primary { background-color: var(--admin-primary) !important; }
+        .bg-secondary { background-color: var(--admin-secondary) !important; }
+        
+        .btn-primary { background-color: var(--admin-primary) !important; border-color: var(--admin-primary) !important; color: white !important; }
+        .btn-primary:hover { background-color: var(--admin-secondary) !important; border-color: var(--admin-secondary) !important; color: white !important; }
+        
+        .btn-secondary { background-color: var(--admin-secondary) !important; border-color: var(--admin-secondary) !important; color: white !important; }
+        .btn-secondary:hover { background-color: var(--admin-primary) !important; border-color: var(--admin-primary) !important; color: white !important; }
+        
+        .btn-outline-primary { color: var(--admin-primary) !important; border-color: var(--admin-primary) !important; background-color: transparent !important; }
+        .btn-outline-primary:hover { background-color: var(--admin-primary) !important; border-color: var(--admin-primary) !important; color: #fff !important; }
+        
+        .btn-outline-secondary { color: var(--admin-secondary) !important; border-color: var(--admin-secondary) !important; background-color: transparent !important; }
+        .btn-outline-secondary:hover { background-color: var(--admin-secondary) !important; border-color: var(--admin-secondary) !important; color: white !important; }
+
+        .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+            background-color: var(--admin-primary) !important;
+            color: white !important;
+        }
+        
+        /* Ensures inactive nav-links don't use default blue */
+        .nav-pills .nav-link { color: var(--admin-secondary); }
+        .nav-pills .nav-link:hover { color: var(--admin-primary); }
 
         body {
             font-family: 'Nunito', sans-serif;

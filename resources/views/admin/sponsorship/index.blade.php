@@ -39,7 +39,7 @@
                                 <td><code>#{{ $s->order_id }}</code></td>
                                 <td>{{ $s->created_at->format('d M Y H:i') }}</td>
                                 <td>
-                                    <a href="{{ route('admin.sponsorships.export', $s->id) }}" class="btn btn-success btn-sm">
+                                    <a href="{{ route('admin.sponsorships.export', $s->id) }}" class="btn btn-primary btn-sm">
                                         <i class="fas fa-file-csv"></i> Export Links
                                     </a>
                                 </td>

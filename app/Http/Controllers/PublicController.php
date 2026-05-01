@@ -39,7 +39,9 @@ class PublicController extends Controller
         $categoryFilter = $slug ?? $request->category;
 
         // 3. Query Event Dasar (Hanya yang Aktif & Masa Depan/Sekarang)
-        $query = Event::with(['location', 'products:product_id,event_id,harga', 'categories'])
+        $query = Event::with(['location', 'products' => function($q) {
+                            $q->select('product_id', 'event_id', 'harga')->where('is_sponsorship', false);
+                       }, 'categories'])
                        ->whereIn('status', ['Upcoming', 'Active', 'Finished'])
                        ->orderBy('tgl_mulai', 'desc');
 
@@ -96,7 +98,14 @@ class PublicController extends Controller
 
     public function showEventDetail($event_id)
     {
-        $event = Event::with(['location', 'products.seatLayout.seats', 'organizers', 'bundles.items.product'])->findOrFail($event_id);
+        $event = Event::with([
+            'location', 
+            'products' => function($q) {
+                $q->where('is_sponsorship', false)->with('seatLayout.seats');
+            }, 
+            'organizers', 
+            'bundles.items.product'
+        ])->findOrFail($event_id);
         return view('public.event_detail', compact('event'));
     }
 
@@ -111,7 +120,9 @@ class PublicController extends Controller
 
         // Ambil semua event yang dikelola organizer ini
         $events = $organizer->events()
-            ->with(['location', 'products:product_id,event_id,harga'])
+            ->with(['location', 'products' => function($q) {
+                $q->select('product_id', 'event_id', 'harga')->where('is_sponsorship', false);
+            }])
             ->whereIn('status', ['Upcoming', 'Active', 'Finished'])
             ->orderBy('tgl_mulai', 'desc')
             ->get();
