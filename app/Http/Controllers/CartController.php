@@ -19,6 +19,30 @@ class CartController extends Controller
         $totalQty = 0;
         $subtotal = 0;
 
+        // --- OPTIMIZATION: Fetch all products and bundles in single queries ---
+        $bundleIds = [];
+        $productIds = [];
+        
+        foreach ($cart as $item) {
+            $id = $item['id'];
+            if (str_starts_with($id, 'bundle_')) {
+                $bundleIds[] = str_replace('bundle_', '', $id);
+            } else {
+                $productIds[] = $id;
+            }
+        }
+
+        $productsDb = collect();
+        if (!empty($productIds)) {
+            $productsDb = Product::whereIn('product_id', $productIds)->get()->keyBy('product_id');
+        }
+
+        $bundlesDb = collect();
+        if (!empty($bundleIds)) {
+            $bundlesDb = Bundle::whereIn('id', $bundleIds)->get()->keyBy('id');
+        }
+        // --------------------------------------------------------------------
+
         foreach ($cart as $key => $item) {
             $id = $item['id'];
             $qty = intval($item['qty']);
@@ -32,7 +56,7 @@ class CartController extends Controller
             if (str_starts_with($id, 'bundle_')) {
                 // Handle Bundle
                 $bundleId = str_replace('bundle_', '', $id);
-                $bundle = Bundle::find($bundleId);
+                $bundle = $bundlesDb->get($bundleId);
                 
                 if ($bundle) {
                     $itemData = $bundle;
@@ -43,7 +67,7 @@ class CartController extends Controller
                 }
             } else {
                 // Handle Product
-                $product = Product::find($id);
+                $product = $productsDb->get($id);
                 
                 if ($product) {
                     $itemData = $product;
@@ -149,6 +173,29 @@ class CartController extends Controller
         // 3. Check Event Max Tickets (Aggregation)
         if ($eventId) {
             $totalForEvent = 0;
+            
+            // Collect IDs to fetch in one go
+            $bIdsToCheck = [];
+            $pIdsToCheck = [];
+            foreach ($currentCart as $cartItem) {
+                if ($cartItem['id'] === $id) continue;
+                $otherId = $cartItem['id'];
+                if (str_starts_with($otherId, 'bundle_')) {
+                    $bIdsToCheck[] = str_replace('bundle_', '', $otherId);
+                } else {
+                    $pIdsToCheck[] = $otherId;
+                }
+            }
+            
+            $bEventMap = [];
+            if (!empty($bIdsToCheck)) {
+                $bEventMap = Bundle::whereIn('id', $bIdsToCheck)->pluck('event_id', 'id')->toArray();
+            }
+            $pEventMap = [];
+            if (!empty($pIdsToCheck)) {
+                $pEventMap = Product::whereIn('product_id', $pIdsToCheck)->pluck('event_id', 'product_id')->toArray();
+            }
+
             foreach ($currentCart as $cartItem) {
                 // Skip the current item being updated (we will add the new qty)
                 if ($cartItem['id'] === $id) continue;
@@ -159,13 +206,11 @@ class CartController extends Controller
                 
                 if (str_starts_with($otherId, 'bundle_')) {
                     $bId = str_replace('bundle_', '', $otherId);
-                    $b = Bundle::find($bId);
-                    if ($b && $b->event_id == $eventId) {
+                    if (isset($bEventMap[$bId]) && $bEventMap[$bId] == $eventId) {
                         $totalForEvent += $otherQty;
                     }
                 } else {
-                    $p = Product::find($otherId);
-                    if ($p && $p->event_id == $eventId) {
+                    if (isset($pEventMap[$otherId]) && $pEventMap[$otherId] == $eventId) {
                         $totalForEvent += $otherQty;
                     }
                 }
