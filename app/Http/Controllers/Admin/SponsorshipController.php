@@ -19,8 +19,9 @@ class SponsorshipController extends Controller
 {
     public function index()
     {
-        $sponsorships = Sponsorship::with(['event', 'order'])->latest()->paginate(10);
-        return view('admin.sponsorship.index', compact('sponsorships'));
+        return "Sponsorship index reached";
+        // $sponsorships = Sponsorship::with(['event', 'order'])->latest()->paginate(10);
+        // return view('admin.sponsorship.index', compact('sponsorships'));
     }
 
     public function create()
