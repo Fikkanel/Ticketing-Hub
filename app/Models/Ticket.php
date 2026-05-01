@@ -13,6 +13,7 @@ class Ticket extends Model
 
     protected $fillable = [
         'ticket_code',
+        'secret_token',
         'order_item_id', 
         'sequence',
         'is_scanned',
@@ -24,6 +25,7 @@ class Ticket extends Model
         'is_scanned' => 'boolean',
         'scanned_at' => 'datetime',
         'sequence' => 'integer',
+        'secret_token' => 'string',
     ];
 
     /**

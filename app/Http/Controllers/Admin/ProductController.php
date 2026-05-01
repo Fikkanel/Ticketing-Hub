@@ -44,6 +44,10 @@ class ProductController extends Controller
 
         $products = $query->get();
 
+        if ($request->ajax()) {
+            return response()->json($products);
+        }
+
         return view('admin.products.index', compact('products', 'events', 'selectedEventId'));
     }
 

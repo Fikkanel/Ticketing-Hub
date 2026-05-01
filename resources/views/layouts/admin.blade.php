@@ -328,10 +328,13 @@
                         </span>
                         <i class="fas fa-chevron-down small" style="font-size: 0.7rem; transition: transform 0.2s;"></i>
                     </a>
-                    <div class="collapse {{ request()->routeIs('admin.orders*', 'admin.discounts*') ? 'show' : '' }}" id="collapseTransaksi">
+                    <div class="collapse {{ request()->routeIs('admin.orders*', 'admin.discounts*', 'admin.sponsorships*') ? 'show' : '' }}" id="collapseTransaksi">
                         <div class="submenu bg-black bg-opacity-10">
                             <a href="{{ route('admin.orders') }}" class="list-group-item list-group-item-action border-0 ps-5 text-white-50 @if(request()->routeIs('admin.orders*')) active-link text-white @endif">
                                 <i class="fas fa-fw fa-shopping-cart"></i> Pesanan Masuk
+                            </a>
+                            <a href="{{ route('admin.sponsorships.index') }}" class="list-group-item list-group-item-action border-0 ps-5 text-white-50 @if(request()->routeIs('admin.sponsorships*')) active-link text-white @endif">
+                                <i class="fas fa-fw fa-handshake"></i> Sponsorship
                             </a>
                             <a href="{{ route('admin.discounts.index') }}" class="list-group-item list-group-item-action border-0 ps-5 text-white-50 @if(request()->routeIs('admin.discounts*')) active-link text-white @endif">
                                 <i class="fas fa-fw fa-tags"></i> Kode Diskon
