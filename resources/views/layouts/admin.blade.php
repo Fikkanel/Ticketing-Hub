@@ -47,7 +47,7 @@
 
         /* --- SIDEBAR STYLE --- */
         #sidebar-wrapper {
-            min-height: 100vh;
+            height: 100vh;
             width: 250px;
             background: linear-gradient(180deg, var(--admin-primary) 10%, var(--admin-secondary) 100%);
             color: #fff;
@@ -56,6 +56,20 @@
             left: 0;
             z-index: 1000;
             transition: all 0.3s;
+            overflow-y: auto;
+            scrollbar-width: thin; /* Untuk Firefox agar scrollbar tidak terlalu lebar */
+        }
+        
+        /* Custom scrollbar style for Webkit (Chrome/Safari) */
+        #sidebar-wrapper::-webkit-scrollbar {
+            width: 5px;
+        }
+        #sidebar-wrapper::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+        }
+        #sidebar-wrapper::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.4);
         }
         .sidebar-brand {
             height: 70px;
