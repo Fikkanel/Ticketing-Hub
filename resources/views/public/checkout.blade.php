@@ -87,19 +87,39 @@
                         <span class="ms-2 small text-muted">Memuat metode pembayaran...</span>
                     </div>
 
+                    <style>
+                        .payment-label .check-icon {
+                            display: none;
+                            color: var(--primary-color);
+                        }
+                        .btn-check:checked + .payment-label {
+                            border-color: var(--primary-color) !important;
+                            background-color: rgba(58, 125, 68, 0.05); /* Soft primary */
+                        }
+                        .btn-check:checked + .payment-label .check-icon {
+                            display: block;
+                        }
+                        .payment-icon-box {
+                            width: 50px; 
+                            height: 40px; 
+                            display: flex; 
+                            align-items: center; 
+                            justify-content: center;
+                        }
+                    </style>
                     <div id="payment-channels-container" style="display: none;">
                         {{-- QRIS --}}
                         <div class="payment-option mb-3" data-channel="qris">
                             <input type="radio" class="btn-check" name="metode_pembayaran" id="pay_qris" value="qris" checked>
                             <label class="btn btn-outline-light text-start w-100 p-3 d-flex align-items-center payment-label border" for="pay_qris">
-                                <div class="flex-shrink-0 bg-white p-1 rounded border" style="width: 50px;">
-                                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_QRIS.svg/1200px-Logo_QRIS.svg.png" class="img-fluid" alt="QRIS">
+                                <div class="flex-shrink-0 bg-white rounded border payment-icon-box">
+                                    <i class="fas fa-qrcode fa-lg" style="color: #ed2a26;"></i>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <div class="fw-bold text-dark">QRIS (OVO, GoPay, Dana, ShopeePay)</div>
                                     <div class="small text-muted">Scan QR code instan</div>
                                 </div>
-                                <div class="ms-auto text-primary check-icon"><i class="fas fa-check-circle fa-lg"></i></div>
+                                <div class="ms-auto check-icon"><i class="fas fa-check-circle fa-lg"></i></div>
                             </label>
                         </div>
                         
@@ -107,14 +127,14 @@
                          <div class="payment-option mb-3" data-channel="gopay">
                             <input type="radio" class="btn-check" name="metode_pembayaran" id="pay_gopay" value="gopay">
                             <label class="btn btn-outline-light text-start w-100 p-3 d-flex align-items-center payment-label border" for="pay_gopay">
-                                <div class="flex-shrink-0 bg-white p-1 rounded border" style="width: 50px;">
-                                    <img src="https://gopay.co.id/icon.png" class="img-fluid" alt="GoPay" onerror="this.src='https://via.placeholder.com/50?text=E-Wallet'">
+                                <div class="flex-shrink-0 bg-white rounded border payment-icon-box">
+                                    <i class="fas fa-wallet fa-lg" style="color: #00a5cf;"></i>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <div class="fw-bold text-dark">GoPay / E-Wallet</div>
                                     <div class="small text-muted">Pembayaran via aplikasi E-Wallet</div>
                                 </div>
-                                <div class="ms-auto text-primary check-icon"><i class="fas fa-check-circle fa-lg"></i></div>
+                                <div class="ms-auto check-icon"><i class="fas fa-check-circle fa-lg"></i></div>
                             </label>
                         </div>
 
@@ -122,14 +142,14 @@
                         <div class="payment-option mb-3" data-channel="bank_transfer">
                             <input type="radio" class="btn-check" name="metode_pembayaran" id="pay_va" value="bank_transfer">
                             <label class="btn btn-outline-light text-start w-100 p-3 d-flex align-items-center payment-label border" for="pay_va">
-                                <div class="flex-shrink-0 bg-white p-1 rounded border w-100 text-center" style="width: 50px; height: 35px; line-height: 35px;">
-                                    <i class="fas fa-university text-secondary"></i>
+                                <div class="flex-shrink-0 bg-white rounded border payment-icon-box">
+                                    <i class="fas fa-university fa-lg text-secondary"></i>
                                 </div>
                                 <div class="flex-grow-1 ms-3">
                                     <div class="fw-bold text-dark">Virtual Account / Transfer Bank</div>
                                     <div class="small text-muted">BCA, BNI, BRI, Mandiri, Permata</div>
                                 </div>
-                                <div class="ms-auto text-primary check-icon"><i class="fas fa-check-circle fa-lg"></i></div>
+                                <div class="ms-auto check-icon"><i class="fas fa-check-circle fa-lg"></i></div>
                             </label>
                         </div>
                     </div>
@@ -263,12 +283,21 @@ document.addEventListener('DOMContentLoaded', async function () {
         fee_gopay: parseFloat(document.getElementById('tax_service_fee_gopay').value) || 0,
     };
 
-    // State
+    // 1. Initial State & Data
     let cartData = [];
+    let productIds = [];
+    let rawSubtotal = 0;
     let appliedDiscount = 0;
-    let isFreeCart = false;
     let applyTax = false;
+    let isFreeCart = false;
     let currentPaymentMethod = 'qris';
+    
+    // Customer Data for Pre-filling (if logged in)
+    const customerData = {
+        nik: "{{ auth()->guard('customer')->user()->nik ?? '' }}",
+        dob: "{{ auth()->guard('customer')->user()->dob ?? '' }}",
+        gender: "{{ auth()->guard('customer')->user()->gender ?? '' }}"
+    };
 
     // 1. Fetch Cart Data from Server
     try {
@@ -331,7 +360,15 @@ document.addEventListener('DOMContentLoaded', async function () {
             body: JSON.stringify({ product_ids: productIds })
         });
         
+        if (!taxResponse.ok) {
+            throw new Error(`HTTP error! status: ${taxResponse.status}`);
+        }
+        
         const taxData = await taxResponse.json();
+        
+        if (taxData.error) {
+            throw new Error(taxData.error);
+        }
         
         applyTax = taxData.apply_tax;
         isFreeCart = taxData.is_free_cart;
@@ -352,13 +389,11 @@ document.addEventListener('DOMContentLoaded', async function () {
         } else {
              document.getElementById('payment-channels-loading').style.display = 'none';
              document.getElementById('payment-channels-container').style.display = 'block';
-             
-             // Filter payment channels if needed (simplified here, assuming UI logic handles hidden inputs inside container)
-             // For strict filtering, can hide/show specific elements based on taxData.allowed_channels
         }
         
     } catch (e) {
         console.error("Tax Check Error", e);
+        document.getElementById('payment-channels-loading').innerHTML = '<div class="alert alert-danger small"><i class="fas fa-exclamation-triangle"></i> Gagal memuat metode pembayaran. Silakan <a href="#" onclick="location.reload(); return false;">Refresh Halaman</a>.</div>';
     }
     
     // 4. Calculate Totals
@@ -514,19 +549,10 @@ document.addEventListener('DOMContentLoaded', async function () {
         const container = document.getElementById('buyer-form-fields-container');
         if (!container || !fields) return;
         
-        // Reset (keep default fields like name/email/phone if they are static in HTML, 
-        // OR clear and rebuild if fully dynamic. Current HTML has static fields).
-        // The implementation in `checkout` usually checks logic to show/hide.
-        // For simplicity, we just look for specific IDs if they existed, or append new inputs.
-        // CURRENT STRATEGY: HTML has static Name, Email, Phone. Additional fields like NIK/DOB need to be appended.
-        
-        // Remove old dynamic fields first
         const oldDynamic = container.querySelectorAll('.dynamic-field');
         oldDynamic.forEach(el => el.remove());
         
         fields.forEach(f => {
-             // Handle standard fields visibility (Name/Email/Phone are always there, maybe just required toggle?)
-             // Only append NIK, DOB, Gender if enabled
              if (['nik', 'dob', 'gender'].includes(f.field) && f.enabled) {
                  const div = document.createElement('div');
                  div.className = 'mb-3 dynamic-field';
@@ -535,22 +561,60 @@ document.addEventListener('DOMContentLoaded', async function () {
                  const star = f.required ? '<span class="text-danger">*</span>' : '';
                  
                  if (f.field === 'gender') {
+                     const selectedL = customerData.gender === 'L' ? 'selected' : '';
+                     const selectedP = customerData.gender === 'P' ? 'selected' : '';
                      input = `
                         <select name="gender" class="form-select" ${req}>
                             <option value="">Pilih Gender</option>
-                            <option value="L">Laki-laki</option>
-                            <option value="P">Perempuan</option>
+                            <option value="L" ${selectedL}>Laki-laki</option>
+                            <option value="P" ${selectedP}>Perempuan</option>
                         </select>
                      `;
+                 } else if (f.field === 'nik') {
+                     input = `
+                        <input type="text" name="${f.field}" id="input-nik" class="form-control" ${req} maxlength="16" placeholder="16 digit angka" value="${customerData.nik}" oninput="this.value = this.value.replace(/[^0-9]/g, ''); validateNik(this)">
+                        <div id="nik-announcement" class="small mt-1" style="display:none;"></div>
+                     `;
+                     // Trigger validation if value exists
+                     setTimeout(() => {
+                         const el = document.getElementById('input-nik');
+                         if(el && el.value) validateNik(el);
+                     }, 100);
                  } else {
                      const type = f.field === 'dob' ? 'date' : 'text';
-                     input = `<input type="${type}" name="${f.field}" class="form-control" ${req}>`;
+                     const val = f.field === 'dob' ? customerData.dob : '';
+                     const maxAttr = f.field === 'dob' ? 'max="2010-12-31"' : '';
+                     input = `<input type="${type}" name="${f.field}" class="form-control" ${req} ${maxAttr} value="${val}">`;
                  }
                  
                  div.innerHTML = `<label class="form-label small fw-bold">${f.label} ${star}</label>${input}`;
                  container.appendChild(div);
              }
         });
+    }
+
+    // Global Helper for NIK Validation
+    window.validateNik = function(el) {
+        const announcement = document.getElementById('nik-announcement');
+        if (!announcement) return;
+        
+        const val = el.value;
+        if (val.length === 0) {
+            announcement.style.display = 'none';
+        } else if (val.length < 16) {
+            announcement.style.display = 'block';
+            announcement.className = 'small mt-1 text-danger';
+            announcement.innerHTML = `<i class="fas fa-info-circle me-1"></i> NIK kurang dari 16 digit (${val.length}/16)`;
+        } else if (val.length === 16) {
+            announcement.style.display = 'block';
+            announcement.className = 'small mt-1 text-success';
+            announcement.innerHTML = `<i class="fas fa-check-circle me-1"></i> NIK sudah tepat 16 digit`;
+        } else {
+            // Seharusnya tidak mungkin lewat 16 karena maxlength, tapi untuk jaga-jaga
+            announcement.style.display = 'block';
+            announcement.className = 'small mt-1 text-danger';
+            announcement.innerHTML = `<i class="fas fa-exclamation-triangle me-1"></i> NIK lebih dari 16 digit`;
+        }
     }
 
     function renderCustomFields(fields) {

@@ -21,6 +21,9 @@ class Customer extends Authenticatable
         'address',  // Sesuai tabel customers
         'email_verified_at',
         'unix_id',
+        'nik',
+        'dob',
+        'gender',
     ];
 
     protected $hidden = [

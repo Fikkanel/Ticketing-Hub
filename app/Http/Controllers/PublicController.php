@@ -432,9 +432,16 @@ class PublicController extends Controller
             if (Auth::guard('customer')->check()) {
                 // Scenario 1: Sudah Login
                 $customer = Auth::guard('customer')->user();
-                // Opsional: Update phone jika kosong
-                if (empty($customer->phone) && $request->filled('telepon')) {
-                    $customer->update(['phone' => $request->telepon]);
+                
+                // Simpan/Update data profil jika ada yang baru diisi
+                $customerUpdates = [];
+                if ($request->filled('telepon')) $customerUpdates['phone'] = $request->telepon;
+                if ($request->filled('nik')) $customerUpdates['nik'] = $request->nik;
+                if ($request->filled('dob')) $customerUpdates['dob'] = $request->dob;
+                if ($request->filled('gender')) $customerUpdates['gender'] = $request->gender;
+                
+                if (!empty($customerUpdates)) {
+                    $customer->update($customerUpdates);
                 }
             } else {
                 // Scenario 2: Guest Checkout (Auto Register)
@@ -444,10 +451,7 @@ class PublicController extends Controller
                 $existingCustomer = Customer::where('email', $email)->first();
                 
                 if ($existingCustomer) {
-                    // SECURITY PREVENTION: 
-                    // Jika email sudah ada tapi user tidak login, kita TIDAK boleh memaksa order ke akun tersebut
-                    // karena orang lain bisa sembarang pakai email orang.
-                    // Frontend harusnya sudah memaksa login. Jika tembus ke sini, kita reject.
+                    // SECURITY PREVENTION
                     DB::rollBack();
                     return back()->with('error', 'Email sudah terdaftar. Silakan login terlebih dahulu untuk melanjutkan.')
                         ->withInput();
@@ -458,8 +462,11 @@ class PublicController extends Controller
                     'name' => $request->nama,
                     'email' => $email,
                     'phone' => $request->telepon,
-                    'password' => Hash::make($request->password), // Password dari input
-                    'email_verified_at' => now(), // Auto verify karena checkout dianggap validasi
+                    'nik' => $request->nik,
+                    'dob' => $request->dob,
+                    'gender' => $request->gender,
+                    'password' => Hash::make($request->password), 
+                    'email_verified_at' => now(), 
                 ]);
 
                 // Login Otomatis

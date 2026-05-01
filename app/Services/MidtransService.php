@@ -32,7 +32,7 @@ class MidtransService
             'payment_type' => 'qris',
             'transaction_details' => [
                 'order_id' => $order->order_id ?? $order->id,
-                'gross_amount' => (int) $order->total_harga,
+                'gross_amount' => (int) round($order->total_harga),
             ],
             'customer_details' => [
                 'first_name' => $customer->name,
@@ -72,7 +72,7 @@ class MidtransService
         $params = [
             'transaction_details' => [
                 'order_id' => $order->order_id ?? $order->id, // Fallback if order_id is not set
-                'gross_amount' => (int) $order->total_harga,
+                'gross_amount' => (int) round($order->total_harga),
             ],
             'customer_details' => [
                 'first_name' => $customer->name,
