@@ -6,11 +6,6 @@
 <style>
     /* Auth Page Overrides */
     body { background: #ffffff !important; }
-    .navbar { background: var(--primary-color) !important; box-shadow: none !important; }
-    .navbar .nav-link { color: #fff !important; }
-    .navbar .hamburger-icon span { background: #fff !important; }
-    .navbar .fas, .navbar .far, .navbar .fab { color: #fff !important; }
-    .navbar-brand { color: #fff !important; }
     main { padding: 0 !important; }
     footer { display: none !important; }
 
