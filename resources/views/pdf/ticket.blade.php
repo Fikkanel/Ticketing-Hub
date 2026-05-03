@@ -321,7 +321,11 @@
                                     
                                     <div class="info-label">Tanggal Acara / Event Date</div>
                                     <div class="info-value">
-                                        {{ \Carbon\Carbon::parse($item->product->event->tgl_mulai)->isoFormat('dddd, D MMM Y') }}<br>
+                                        @if($item->product->valid_date)
+                                            {{ $item->product->valid_date->isoFormat('dddd, D MMM Y') }}<br>
+                                        @else
+                                            {{ \Carbon\Carbon::parse($item->product->event->tgl_mulai)->isoFormat('dddd, D MMM Y') }}<br>
+                                        @endif
                                         {{ \Carbon\Carbon::parse($item->product->event->tgl_mulai)->format('H:i') }} WIB
                                     </div>
 
