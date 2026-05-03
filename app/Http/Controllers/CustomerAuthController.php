@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\CustomerOtpMail;
 use App\Models\Customer;
-use App\Models\CustomerOtp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -281,20 +279,4 @@ class CustomerAuthController extends Controller
             ->with('success', 'Password berhasil direset! Silakan login dengan password baru Anda.');
     }
 
-    /**
-     * Helper: Kirim OTP ke email.
-     */
-    private function sendOtp(string $email, string $type): void
-    {
-        try {
-            $otpRecord = CustomerOtp::generateFor($email);
-
-            Mail::to($email)->send(new CustomerOtpMail($otpRecord->otp, $type));
-
-            Log::info("OTP sent to {$email} for {$type}");
-        } catch (\Exception $e) {
-            Log::error("Failed to send OTP to {$email}: " . $e->getMessage());
-            throw $e;
-        }
-    }
 }
