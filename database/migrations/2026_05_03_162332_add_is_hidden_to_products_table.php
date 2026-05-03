@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('products', function (Blueprint $table) {
-            $table->boolean('is_hidden')->default(false)->after('status')->comment('Sembunyikan dari halaman pembeli (Hanya untuk bundle)');
+            $table->boolean('is_hidden')->default(false)->after('is_sponsorship')->comment('Sembunyikan dari halaman pembeli (Hanya untuk bundle)');
         });
     }
 
