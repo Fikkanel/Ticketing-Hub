@@ -335,8 +335,8 @@
                                     <div class="info-value">#{{ $order->order_id }}</div>
 
                                     <div class="price-box">
-                                        <div class="info-label">Harga / Price</div>
-                                        <div class="price-value">Rp {{ number_format($item->product->harga, 0, ',', '.') }}</div>
+                                        <div class="info-label">Total Bayar / Total Paid</div>
+                                        <div class="price-value">Rp {{ number_format($order->total_harga, 0, ',', '.') }}</div>
                                     </div>
                                 </td>
 
