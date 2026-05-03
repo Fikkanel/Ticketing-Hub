@@ -85,6 +85,7 @@ class ProductController extends Controller
             'stok' => 'required|integer|min:0',
             'tipe' => 'required|in:Fisik,Digital,Seminar',
             'kategori_tiket' => 'nullable|in:standing,seating',
+            'valid_date' => 'nullable|date',
         ];
 
         // Security Validation for Admin
@@ -153,6 +154,7 @@ class ProductController extends Controller
             'stok' => 'required|integer|min:0',
             'tipe' => 'required|in:Fisik,Digital,Seminar',
             'kategori_tiket' => 'nullable|in:standing,seating',
+            'valid_date' => 'nullable|date',
         ];
 
         // Security Validation for Input Event ID

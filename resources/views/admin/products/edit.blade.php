@@ -59,6 +59,16 @@
                     @error('kategori_tiket')<div class="invalid-feedback">{{ $message }}</div>@enderror
                 </div>
 
+                {{-- Tanggal Berlaku Tiket --}}
+                <div class="mb-3">
+                    <label for="valid_date" class="form-label">Tanggal Berlaku <span class="badge bg-secondary">Opsional</span></label>
+                    <input type="date" class="form-control @error('valid_date') is-invalid @enderror" id="valid_date" name="valid_date" value="{{ old('valid_date', optional($product->valid_date)->format('Y-m-d')) }}">
+                    <div class="form-text text-muted">
+                        <i class="fas fa-calendar-alt"></i> Jika diisi, tiket ini HANYA BISA di-scan pada tanggal yang ditentukan. Kosongkan jika tiket berlaku kapan saja.
+                    </div>
+                    @error('valid_date')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+
                 {{-- 5. Keterikatan Event --}}
                 <div class="mb-3">
                     <label for="event_id" class="form-label">Terikat dengan Event (Opsional)</label>

@@ -78,6 +78,14 @@ class ScannerController extends Controller
                 ], 403);
             }
 
+            // 4.6 Check Date Validity
+            if ($product->valid_date && $product->valid_date->format('Y-m-d') !== now()->format('Y-m-d')) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Tiket ini HANYA berlaku untuk tanggal ' . $product->valid_date->format('d M Y') . ' (Hari ini: ' . now()->format('d M Y') . ')'
+                ], 400);
+            }
+
             // 5. Check if Already Scanned
             if ($ticket->is_scanned) {
                 return response()->json([
@@ -167,6 +175,14 @@ class ScannerController extends Controller
                     'status' => 'error',
                     'message' => 'AKSES DITOLAK: Anda tidak memiliki izin untuk menscan tiket event ini.'
                 ], 403);
+            }
+
+            // 4.6 Check Date Validity (Legacy Mode)
+            if ($product->valid_date && $product->valid_date->format('Y-m-d') !== now()->format('Y-m-d')) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => 'Tiket ini HANYA berlaku untuk tanggal ' . $product->valid_date->format('d M Y') . ' (Hari ini: ' . now()->format('d M Y') . ')'
+                ], 400);
             }
 
             if ($orderItem->is_scanned) {
