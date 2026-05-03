@@ -11,11 +11,11 @@
         $siteUrl = config('app.url', 'tixkita.id');
         $logoPath = $settings['logo_path'] ?? null;
         
-        // Colors from settings
-        $headerBgColor = $settings['header_bg_color'] ?? '#1a365d';
-        $headerTextColor = $settings['header_text_color'] ?? '#ffffff';
-        $footerBgColor = $settings['footer_bg_color'] ?? '#1a365d';
-        $footerTextColor = $settings['footer_text_color'] ?? '#ffffff';
+        // Colors matching web theme
+        $headerBgColor = '#3A7D44';
+        $headerTextColor = '#ffffff';
+        $footerBgColor = '#3A7D44';
+        $footerTextColor = '#ffffff';
         
         // Social media links
         $socialInstagram = $settings['social_instagram'] ?? null;
@@ -358,10 +358,14 @@
                         <div style="text-align: left;">
                             <div style="font-weight: bold; font-size: 11px; margin-bottom: 6px; color: #333;">Syarat dan Ketentuan / Terms & Conditions</div>
                             <div class="footer-text">
-                                • Harap tunjukkan QR Code ini kepada petugas di lokasi acara.<br>
-                                • Tiket ini berlaku untuk 1 (satu) orang sesuai kategori produk.<br>
-                                • Dilarang menggandakan atau menyebarluaskan file tiket ini.<br>
-                                • Tiket yang sudah dibeli tidak dapat dikembalikan atau ditukar.
+                                @if(!empty($item->product->event->terms_conditions))
+                                    {!! nl2br(e($item->product->event->terms_conditions)) !!}
+                                @else
+                                    • Harap tunjukkan QR Code ini kepada petugas di lokasi acara.<br>
+                                    • Tiket ini berlaku untuk 1 (satu) orang sesuai kategori produk.<br>
+                                    • Dilarang menggandakan atau menyebarluaskan file tiket ini.<br>
+                                    • Tiket yang sudah dibeli tidak dapat dikembalikan atau ditukar.
+                                @endif
                             </div>
                         </div>
                     </div>

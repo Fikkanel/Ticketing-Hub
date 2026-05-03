@@ -197,7 +197,7 @@
                 @endif
                 
                 <center>
-                    <a href="{{ route('public.invoice', $order->order_id) }}" class="btn-check">Lihat Invoice di Website</a>
+                    <a href="{{ route('public.invoice', $order->order_id) }}" class="btn-check" style="color: #ffffff !important;">Lihat Invoice di Website</a>
                 </center>
             </div>
         </div>
