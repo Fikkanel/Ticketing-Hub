@@ -99,27 +99,46 @@ class SponsorshipManagementController extends Controller
 
     public function export(Sponsorship $sponsorship)
     {
-        $sponsorship->load(['order.orderItems.tickets']);
+        $sponsorship->load(['event', 'order.orderItems.tickets']);
         $tickets = $sponsorship->order->orderItems->first()->tickets;
+        $eventName = $sponsorship->event->judul ?? '-';
+        $sponsorName = $sponsorship->name;
 
-        $callback = function() use ($tickets) {
+        $callback = function() use ($tickets, $sponsorName, $eventName) {
             $file = fopen('php://output', 'w');
-            fputcsv($file, ['No', 'Ticket Code', 'Access Link']);
+            
+            // UTF-8 BOM agar Excel langsung mengenali encoding
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+            
+            // Header kolom (semicolon delimiter agar Excel auto-split)
+            fputcsv($file, [
+                'No', 
+                'Ticket Code', 
+                'Access Link', 
+                'Nama Sponsor', 
+                'Event', 
+                'Status Scan'
+            ], ';');
 
             foreach ($tickets as $index => $ticket) {
                 fputcsv($file, [
                     $index + 1,
                     $ticket->ticket_code,
-                    'https://access.tixkita.id/' . $ticket->secret_token
-                ]);
+                    'https://access.tixkita.id/' . $ticket->secret_token,
+                    $sponsorName,
+                    $eventName,
+                    $ticket->is_scanned ? 'Sudah Scan' : 'Belum Scan',
+                ], ';');
             }
 
             fclose($file);
         };
 
+        $filename = 'sponsorship_' . Str::slug($sponsorName) . '_' . date('Ymd_His') . '.csv';
+
         $headers = [
-            'Content-Type' => 'text/csv',
-            'Content-Disposition' => 'attachment; filename="sponsorship_' . Str::slug($sponsorship->name) . '.csv"',
+            'Content-Type' => 'text/csv; charset=UTF-8',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
         ];
 
         return response()->stream($callback, 200, $headers);
