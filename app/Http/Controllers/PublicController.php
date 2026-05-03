@@ -984,10 +984,23 @@ class PublicController extends Controller
                     $order->save();
 
                     // Restore Stock if Cancelled
+                    $restoredBundles = [];
                     foreach ($order->orderItems as $item) {
-                         if ($item->product) {
-                             $item->product->increment('stok', $item->kuantitas);
-                         }
+                        if ($item->bundle_id) {
+                            // Restore Bundle Stock once per bundle
+                            if (!isset($restoredBundles[$item->bundle_id])) {
+                                $bundleItem = \App\Models\BundleItem::where('bundle_id', $item->bundle_id)
+                                    ->where('product_id', $item->product_id)->first();
+                                $bundleQty = $bundleItem && $bundleItem->quantity > 0 ? ($item->kuantitas / $bundleItem->quantity) : $item->kuantitas;
+                                \App\Models\Bundle::where('id', $item->bundle_id)->increment('stok', $bundleQty);
+                                $restoredBundles[$item->bundle_id] = true;
+                            }
+                        } else {
+                            // Restore Regular Product Stock
+                            if ($item->product) {
+                                $item->product->increment('stok', $item->kuantitas);
+                            }
+                        }
                     }
                     
                     // Restore Discount Use
