@@ -120,24 +120,51 @@
 @push('scripts')
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-    const kategoriSelect = document.getElementById('kategori_tiket');
+    const isHiddenCheckbox = document.getElementById('is_hidden');
     const stokInput = document.getElementById('stok');
+    const kategoriSelect = document.getElementById('kategori_tiket');
     const stokHelper = document.getElementById('stok-helper');
 
-    function toggleStokInput() {
-        if (kategoriSelect.value === 'seating') {
+    function updateStokBehavior() {
+        const isBundleOnly = isHiddenCheckbox && isHiddenCheckbox.checked;
+        const isSeating = kategoriSelect && kategoriSelect.value === 'seating';
+
+        if (isBundleOnly) {
+            // Bundle Only: Stock is irrelevant
             stokInput.readOnly = true;
-            stokHelper.style.display = 'block';
+            stokInput.classList.add('bg-light');
+            // We don't automatically override value in Edit if it's already set, 
+            // unless it was 0. But for consistency with Create:
+            if (stokInput.value == 0) stokInput.value = 999999;
+            
+            if (stokHelper) {
+                stokHelper.innerHTML = '<i class="fas fa-info-circle"></i> Stok dinonaktifkan karena produk ini khusus Bundle (Stok diatur di menu Bundle).';
+                stokHelper.style.display = 'block';
+                stokHelper.classList.remove('text-info');
+                stokHelper.classList.add('text-warning');
+            }
+        } else if (isSeating) {
+            // Seating: Stock managed by layout
+            stokInput.readOnly = true;
+            stokInput.classList.add('bg-light');
+            if (stokHelper) {
+                stokHelper.innerHTML = '<i class="fas fa-info-circle"></i> Stok tiket Seating akan menyesuaikan otomatis dengan jumlah kursi aktif di menu Layout.';
+                stokHelper.style.display = 'block';
+                stokHelper.classList.remove('text-warning');
+                stokHelper.classList.add('text-info');
+            }
         } else {
+            // Regular Product: Manual stock
             stokInput.readOnly = false;
-            stokHelper.style.display = 'none';
+            stokInput.classList.remove('bg-light');
+            if (stokHelper) stokHelper.style.display = 'none';
         }
     }
 
-    if (kategoriSelect) {
-        kategoriSelect.addEventListener('change', toggleStokInput);
-        toggleStokInput();
-    }
+    if (isHiddenCheckbox) isHiddenCheckbox.addEventListener('change', updateStokBehavior);
+    if (kategoriSelect) kategoriSelect.addEventListener('change', updateStokBehavior);
+    
+    updateStokBehavior();
 });
 </script>
 @endpush
