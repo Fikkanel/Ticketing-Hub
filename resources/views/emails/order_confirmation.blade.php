@@ -27,16 +27,14 @@
             max-width: 550px; 
             margin: 20px auto; 
             border-radius: 16px; 
-            overflow: hidden; 
-            box-shadow: 0 10px 20px rgba(97, 67, 133, 0.2);
-            background-color: #ffffff;
+            box-shadow: 0 10px 20px rgba(58, 125, 68, 0.2);
         }
         
         /* Ticket Left Side (Event Info) */
         .ticket-left {
             /* Gradient Background */
-            background: linear-gradient(135deg, #614385 0%, #516395 100%);
-            background-color: #614385; /* Fallback */
+            background: linear-gradient(135deg, #3A7D44 0%, #2b5c32 100%);
+            background-color: #3A7D44; /* Fallback */
             padding: 25px;
             color: #ffffff;
             width: 65%;
@@ -68,13 +66,13 @@
         .invoice-section { padding: 20px 40px 40px 40px; }
         .invoice-table th { text-align: left; padding: 10px 0; border-bottom: 2px solid #eee; color: #888; font-size: 12px; text-transform: uppercase; }
         .invoice-table td { padding: 12px 0; border-bottom: 1px solid #f5f5f5; color: #333; }
-        .total-row td { border-top: 2px solid #eee; border-bottom: none; font-weight: bold; font-size: 18px; color: #614385; padding-top: 20px; }
+        .total-row td { border-top: 2px solid #eee; border-bottom: none; font-weight: bold; font-size: 18px; color: #3A7D44; padding-top: 20px; }
 
         /* Footer */
         .footer { text-align: center; padding: 20px; color: #999; font-size: 12px; }
         
         /* Utilities */
-        .btn-check { display: inline-block; background: #614385; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold; margin-top: 20px; }
+        .btn-check { display: inline-block; background: #3A7D44; color: #fff; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: 14px; font-weight: bold; margin-top: 20px; }
     </style>
 </head>
 <body>
@@ -112,8 +110,7 @@
                 </div>
             @elseif($digitalItems->isNotEmpty())
                 {{-- REGULAR MODE: Show Ticket Attached Notice --}}
-                <div style="background-color: #e8f4fc; border: 1px solid #b6e0fe; color: #1e5c8e; padding: 15px 20px; border-radius: 8px; margin: 20px; display: flex; align-items: flex-start;">
-                    <span style="font-size: 24px; margin-right: 15px;">📎</span>
+                <div style="background-color: #e9f5eb; border: 1px solid #c3e6cb; color: #155724; padding: 15px 20px; border-radius: 8px; margin: 20px; display: flex; align-items: flex-start;">
                     <div>
                         <strong>Tiket Anda Terlampir!</strong><br>
                         Silakan unduh file PDF yang terlampir di email ini untuk melihat E-Ticket Anda lengkap dengan QR Code unik.
