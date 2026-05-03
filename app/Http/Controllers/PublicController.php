@@ -581,16 +581,9 @@ class PublicController extends Controller
                         return back()->with('error', 'Stok bundle ' . $bundle->name . ' tidak mencukupi.');
                     }
                     
-                    // IMPORTANT: Validate stock for ALL individual products in bundle first (WITH LOCK)
-                    foreach ($bundle->items as $bundleItem) {
-                        $requiredQty = $bundleItem->quantity * $qty;
-                        $product = Product::where('product_id', $bundleItem->product_id)->lockForUpdate()->first();
-                        
-                        if (!$product || $product->stok < $requiredQty) {
-                            DB::rollBack();
-                            return back()->with('error', 'Stok produk "' . ($product->nama_produk ?? 'Unknown') . '" dalam bundle tidak mencukupi. Tersedia: ' . ($product->stok ?? 0) . ', Dibutuhkan: ' . $requiredQty);
-                        }
-                    }
+                    // IMPORTANT: We NO LONGER validate individual product stock here.
+                    // Bundle stock is now completely independent from individual daily tickets.
+                    // Meaning, if someone buys a bundle, it does NOT eat into the daily ticket quota.
                     
                     $totalHargaProduk += $bundle->price * $qty;
                     
@@ -625,8 +618,8 @@ class PublicController extends Controller
                         ];
 
                         
-                        // Decrement stock for individual products
-                        Product::where('product_id', $bundleItem->product_id)->decrement('stok', $bundleItem->quantity * $qty);
+                        // Independent Bundle Stock: We do NOT decrement the individual product stock anymore.
+                        // Product::where('product_id', $bundleItem->product_id)->decrement('stok', $bundleItem->quantity * $qty);
                     }
                     
                     // Decrement bundle stock
