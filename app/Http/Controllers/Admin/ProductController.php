@@ -103,6 +103,7 @@ class ProductController extends Controller
         }
         
         $validatedData['is_sponsorship'] = $request->has('is_sponsorship') ? 1 : 0;
+        $validatedData['is_hidden'] = $request->has('is_hidden') ? 1 : 0;
 
         Product::create($validatedData);
 
@@ -169,6 +170,7 @@ class ProductController extends Controller
         }
         
         $validatedData['is_sponsorship'] = $request->has('is_sponsorship') ? 1 : 0;
+        $validatedData['is_hidden'] = $request->has('is_hidden') ? 1 : 0;
 
         $product->update($validatedData);
 

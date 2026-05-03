@@ -78,6 +78,15 @@
                     </label>
                 </div>
 
+                {{-- 7. Khusus Bundle (Hidden) --}}
+                <div class="mb-3 form-check form-switch mt-4">
+                    <input class="form-check-input" type="checkbox" id="is_hidden" name="is_hidden" value="1" {{ old('is_hidden') ? 'checked' : '' }}>
+                    <label class="form-check-label fw-bold" for="is_hidden">
+                        Sembunyikan dari Publik (Khusus Bundle)
+                        <small class="d-block text-muted fw-normal mt-1"><i class="fas fa-eye-slash text-warning"></i> Jika dicentang, tiket ini <b>tidak bisa dibeli satuan</b> oleh pembeli. Hanya bisa dijual sebagai isi dari Paket Bundle.</small>
+                    </label>
+                </div>
+
             </div>
         </div>
 

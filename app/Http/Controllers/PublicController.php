@@ -101,7 +101,7 @@ class PublicController extends Controller
         $event = Event::with([
             'location', 
             'products' => function($q) {
-                $q->where('is_sponsorship', false)->with('seatLayout.seats');
+                $q->where('is_sponsorship', false)->where('is_hidden', false)->with('seatLayout.seats');
             }, 
             'organizers', 
             'bundles.items.product'
@@ -121,7 +121,7 @@ class PublicController extends Controller
         // Ambil semua event yang dikelola organizer ini
         $events = $organizer->events()
             ->with(['location', 'products' => function($q) {
-                $q->select('product_id', 'event_id', 'harga')->where('is_sponsorship', false);
+                $q->select('product_id', 'event_id', 'harga')->where('is_sponsorship', false)->where('is_hidden', false);
             }])
             ->whereIn('status', ['Upcoming', 'Active', 'Finished'])
             ->orderBy('tgl_mulai', 'desc')

@@ -15,7 +15,11 @@ class Product extends Model
 
     // Pastikan semua kolom yang diisi dari formulir produk ada di fillable
     protected $fillable = [
-        'event_id', 'nama_produk', 'deskripsi', 'harga', 'stok', 'tipe', 'kategori_tiket', 'whatsapp_link', 'is_sponsorship'
+        'event_id', 'nama_produk', 'deskripsi', 'harga', 'stok', 'tipe', 'kategori_tiket', 'whatsapp_link', 'is_sponsorship', 'is_hidden'
+    ];
+    
+    protected $casts = [
+        'is_hidden' => 'boolean',
     ];
     
     // Tentukan kolom tanggal jika perlu (untuk deleted_at otomatis dikenali oleh trait SoftDeletes)
