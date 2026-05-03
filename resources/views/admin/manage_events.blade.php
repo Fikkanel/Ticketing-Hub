@@ -54,6 +54,9 @@
                                         <a href="{{ route('admin.events.edit', $event->event_id) }}" class="btn btn-warning btn-sm btn-circle" title="Edit">
                                             <i class="fas fa-pen"></i>
                                         </a>
+                                        <a href="{{ route('admin.bundles.index', $event->event_id) }}" class="btn btn-primary btn-sm btn-circle" title="Bundling Tiket">
+                                            <i class="fas fa-boxes"></i>
+                                        </a>
                                         @if($event->layout_type === 'manual_map')
                                             <a href="{{ route('admin.events.venue_map', $event->event_id) }}" class="btn btn-info btn-sm btn-circle" title="Venue Map Builder">
                                                 <i class="fas fa-map"></i>
