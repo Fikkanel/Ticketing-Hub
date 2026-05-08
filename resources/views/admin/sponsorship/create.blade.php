@@ -77,7 +77,7 @@
                     <h5 class="font-weight-bold"><i class="fas fa-info-circle me-2"></i> Informasi Fitur</h5>
                     <p class="mb-0">
                         Fitur ini digunakan untuk membuat tiket sponsorship secara massal. 
-                        Tiket yang digenerate akan memiliki link akses khusus melalui subdomain <strong>access.tixkita.id</strong>.
+                        Tiket yang digenerate akan memiliki link akses khusus melalui subdomain <strong>access.Ticketing Hub.id</strong>.
                     </p>
                     <ul class="mt-3">
                         <li>Tiket tidak dikirim via email.</li>

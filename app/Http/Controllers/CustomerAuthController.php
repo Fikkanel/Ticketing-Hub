@@ -110,7 +110,7 @@ class CustomerAuthController extends Controller
         Auth::guard('customer')->login($customer, true);
 
         return redirect()->route('customer.dashboard')
-            ->with('success', 'Selamat datang di TixKita! Akun Anda berhasil dibuat.');
+            ->with('success', 'Selamat datang di Ticketing Hub! Akun Anda berhasil dibuat.');
     }
 
     /**

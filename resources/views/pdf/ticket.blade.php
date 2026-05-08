@@ -7,8 +7,8 @@
         // Get all site settings for branding
         $settings = \App\Models\Setting::all()->pluck('value', 'key');
         
-        $siteName = $settings['site_title'] ?? config('app.name', 'TixKita');
-        $siteUrl = config('app.url', 'tixkita.id');
+        $siteName = $settings['site_title'] ?? config('app.name', 'Ticketing Hub');
+        $siteUrl = config('app.url', 'Ticketing Hub.id');
         $logoPath = $settings['logo_path'] ?? null;
         
         // Colors matching web theme

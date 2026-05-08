@@ -17,7 +17,7 @@
 
                     <div class="mb-3">
                         <label for="site_title" class="form-label">Judul Situs</label>
-                        <input type="text" class="form-control" id="site_title" name="site_title" value="{{ $settings['site_title'] ?? 'TixKita' }}">
+                        <input type="text" class="form-control" id="site_title" name="site_title" value="{{ $settings['site_title'] ?? 'Ticketing Hub' }}">
                     </div>
 
                     <div class="mb-3">

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Login - TixKita</title>
+    <title>Admin Login - Ticketing Hub</title>
     
     {{-- Prevent Browser Cache (Important for login/logout) --}}
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -365,13 +365,13 @@
         <div class="brand-panel">
             <div class="brand-logo">
                 @if($logoPath)
-                    <img src="{{ asset('storage/' . $logoPath) }}" alt="TixKita Logo">
+                    <img src="{{ asset('storage/' . $logoPath) }}" alt="Ticketing Hub Logo">
                 @else
                     <i class="fas fa-ticket-alt"></i>
                 @endif
             </div>
-            <h1>TixKita</h1>
-            <p>Panel administrasi untuk mengelola event, tiket, dan transaksi TixKita.</p>
+            <h1>Ticketing Hub</h1>
+            <p>Panel administrasi untuk mengelola event, tiket, dan transaksi Ticketing Hub.</p>
             
             <div class="brand-features">
                 <div class="feature">
@@ -388,18 +388,18 @@
                 </div>
             </div>
             
-            <div class="version-badge">TixKita Admin v2.0</div>
+            <div class="version-badge">Ticketing Hub Admin v2.0</div>
         </div>
         
         <!-- Mobile Header Banner (visible on mobile only) -->
         <div class="mobile-header">
             @if($logoPath)
-                <img src="{{ asset('storage/' . $logoPath) }}" alt="TixKita">
+                <img src="{{ asset('storage/' . $logoPath) }}" alt="Ticketing Hub">
             @else
                 <i class="fas fa-ticket-alt fallback-icon"></i>
             @endif
             <h3>Admin Panel</h3>
-            <p>Kelola event & tiket TixKita</p>
+            <p>Kelola event & tiket Ticketing Hub</p>
         </div>
 
         <!-- Right Panel - Login Form -->
@@ -447,7 +447,7 @@
                 <div class="form-group">
                     <label for="email">Alamat Email</label>
                     <div class="input-wrapper">
-                        <input type="email" id="email" name="email" placeholder="admin@tixkita.id" 
+                        <input type="email" id="email" name="email" placeholder="admin@Ticketing Hub.id" 
                                value="{{ old('email') }}" required autofocus>
                         <i class="fas fa-envelope"></i>
                     </div>

@@ -44,7 +44,7 @@ class SponsorshipController extends Controller
         try {
             // 1. Get or Create Sponsorship Customer
             $customer = Customer::firstOrCreate(
-                ['email' => 'sponsor@tixkita.id'],
+                ['email' => 'sponsor@Ticketing Hub.id'],
                 [
                     'name' => 'Sponsorship User',
                     'phone' => '0000000000',
@@ -111,7 +111,7 @@ class SponsorshipController extends Controller
                 fputcsv($file, [
                     $index + 1,
                     $ticket->ticket_code,
-                    'https://access.tixkita.id/' . $ticket->secret_token
+                    'https://access.Ticketing Hub.id/' . $ticket->secret_token
                 ]);
             }
 

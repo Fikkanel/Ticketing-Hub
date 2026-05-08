@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Masuk - TixKita')
+@section('title', 'Masuk - Ticketing Hub')
 
 @section('content')
 <style>

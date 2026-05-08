@@ -64,7 +64,7 @@
                 <i class="fas fa-exclamation-circle fa-2x text-warning me-3"></i>
                 <div>
                     <strong class="d-block mb-1">Pemberitahuan Penting</strong>
-                    <span class="text-muted small">Harap baca syarat dan ketentuan ini dengan saksama sebelum menggunakan layanan kami. Dengan menggunakan TixKita, Anda menyetujui seluruh ketentuan di bawah ini.</span>
+                    <span class="text-muted small">Harap baca syarat dan ketentuan ini dengan saksama sebelum menggunakan layanan kami. Dengan menggunakan Ticketing Hub, Anda menyetujui seluruh ketentuan di bawah ini.</span>
                 </div>
             </div>
 
@@ -75,7 +75,7 @@
                     Ketentuan Penggunaan
                 </div>
                 <div class="terms-content-text">
-                    <p class="mb-0"><strong>TixKita</strong> ditawarkan kepada Anda, pengguna, dengan syarat Anda menerima syarat, ketentuan, dan pemberitahuan yang terkandung atau tergabung dalam referensi di sini.</p>
+                    <p class="mb-0"><strong>Ticketing Hub</strong> ditawarkan kepada Anda, pengguna, dengan syarat Anda menerima syarat, ketentuan, dan pemberitahuan yang terkandung atau tergabung dalam referensi di sini.</p>
                 </div>
             </div>
 
@@ -97,7 +97,7 @@
                     Modifikasi Situs dan Syarat & Ketentuan
                 </div>
                 <div class="terms-content-text">
-                    <p class="mb-0"><strong>TixKita</strong> berhak untuk mengubah, memodifikasi, memperbarui, atau menghentikan syarat, ketentuan, konten, informasi, dan harga kapan saja tanpa pemberitahuan sebelumnya. Kami berhak menyesuaikan harga dari waktu ke waktu. Jika terjadi kesalahan harga, kami berhak menolak pesanan tersebut.</p>
+                    <p class="mb-0"><strong>Ticketing Hub</strong> berhak untuk mengubah, memodifikasi, memperbarui, atau menghentikan syarat, ketentuan, konten, informasi, dan harga kapan saja tanpa pemberitahuan sebelumnya. Kami berhak menyesuaikan harga dari waktu ke waktu. Jika terjadi kesalahan harga, kami berhak menolak pesanan tersebut.</p>
                 </div>
             </div>
 
@@ -108,7 +108,7 @@
                     Hak Cipta
                 </div>
                 <div class="terms-content-text">
-                    <p class="mb-0">Kecuali ditentukan lain, semua materi di Situs ini, merek dagang, merek layanan, dan logo adalah milik <strong>TixKita</strong> dan dilindungi oleh undang-undang hak cipta Indonesia dan internasional. Materi tidak boleh disalin atau didistribusikan tanpa izin tertulis sebelumnya.</p>
+                    <p class="mb-0">Kecuali ditentukan lain, semua materi di Situs ini, merek dagang, merek layanan, dan logo adalah milik <strong>Ticketing Hub</strong> dan dilindungi oleh undang-undang hak cipta Indonesia dan internasional. Materi tidak boleh disalin atau didistribusikan tanpa izin tertulis sebelumnya.</p>
                 </div>
             </div>
 
@@ -119,7 +119,7 @@
                     Pemberian Lisensi & Akses
                 </div>
                 <div class="terms-content-text">
-                    <p class="mb-0">TixKita memberi Anda hak untuk mengakses dan menggunakan Platform semata-mata untuk tujuan pembelian tiket event dan produk digital. Anda tidak boleh melakukan dekompilasi, membongkar (disassemble), atau merekayasa balik (reverse engineer) komponen apa pun dari platform tersebut.</p>
+                    <p class="mb-0">Ticketing Hub memberi Anda hak untuk mengakses dan menggunakan Platform semata-mata untuk tujuan pembelian tiket event dan produk digital. Anda tidak boleh melakukan dekompilasi, membongkar (disassemble), atau merekayasa balik (reverse engineer) komponen apa pun dari platform tersebut.</p>
                 </div>
             </div>
 
@@ -156,7 +156,7 @@
                         <li>Tiket event yang sudah dibeli <strong>tidak dapat dikembalikan</strong>, kecuali jika event dibatalkan oleh penyelenggara.</li>
                         <li>Barang fisik harus dikembalikan dalam waktu 7 hari sejak diterima jika terdapat cacat produksi.</li>
                         <li>Barang diskon (sale) tidak memenuhi syarat untuk pengembalian.</li>
-                        <li>Keputusan pengembalian dana sepenuhnya merupakan hak prerogatif TixKita.</li>
+                        <li>Keputusan pengembalian dana sepenuhnya merupakan hak prerogatif Ticketing Hub.</li>
                     </ul>
                 </div>
             </div>
@@ -168,7 +168,7 @@
                     Keamanan & Kebijakan Privasi
                 </div>
                 <div class="terms-content-text">
-                    <p class="mb-0">Informasi Anda aman bersama kami. Kami hanya menggunakan informasi pribadi Anda untuk menyelesaikan pesanan Anda dan tidak akan menyalahgunakan atau menjualnya kepada pihak lain. TixKita akan mengambil semua langkah yang wajar untuk mencegah pelanggaran keamanan pada interaksi server dengan Anda.</p>
+                    <p class="mb-0">Informasi Anda aman bersama kami. Kami hanya menggunakan informasi pribadi Anda untuk menyelesaikan pesanan Anda dan tidak akan menyalahgunakan atau menjualnya kepada pihak lain. Ticketing Hub akan mengambil semua langkah yang wajar untuk mencegah pelanggaran keamanan pada interaksi server dengan Anda.</p>
                 </div>
             </div>
 
@@ -179,7 +179,7 @@
                     Ganti Rugi (Indemnity)
                 </div>
                 <div class="terms-content-text">
-                    <p class="mb-0">Anda setuju untuk mengganti rugi dan membebaskan <strong>TixKita</strong> dari segala klaim pihak ketiga, kerugian, atau biaya (termasuk biaya pengacara) yang timbul dari akses atau penggunaan Anda terhadap Situs ini.</p>
+                    <p class="mb-0">Anda setuju untuk mengganti rugi dan membebaskan <strong>Ticketing Hub</strong> dari segala klaim pihak ketiga, kerugian, atau biaya (termasuk biaya pengacara) yang timbul dari akses atau penggunaan Anda terhadap Situs ini.</p>
                 </div>
             </div>
 

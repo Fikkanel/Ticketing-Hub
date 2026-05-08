@@ -13,7 +13,7 @@ class SettingsSeeder extends Seeder
     public function run(): void
     {
         $settings = [
-            ['key' => 'site_title', 'value' => 'TixKita', 'type' => 'text'],
+            ['key' => 'site_title', 'value' => 'Ticketing Hub', 'type' => 'text'],
             ['key' => 'logo_path', 'value' => null, 'type' => 'image'], // Akan di-handle upload
             ['key' => 'primary_color', 'value' => '#3b82f6', 'type' => 'color'], // Default Blue
             ['key' => 'secondary_color', 'value' => '#1e3a8a', 'type' => 'color'], // Default Dark Blue

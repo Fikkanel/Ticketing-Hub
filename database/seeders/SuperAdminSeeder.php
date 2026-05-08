@@ -14,8 +14,8 @@ class SuperAdminSeeder extends Seeder
     {
         \App\Models\User::create([
             'name' => 'Super Admin',
-            'email' => 'admin@tixkita.id',
-            'password' => \Illuminate\Support\Facades\Hash::make('@TixKita2025'), // Ganti dengan password yang aman
+            'email' => 'admin@Ticketing Hub.id',
+            'password' => \Illuminate\Support\Facades\Hash::make('@Ticketing Hub2025'), // Ganti dengan password yang aman
             'role' => 'superadmin',
         ]);
     }

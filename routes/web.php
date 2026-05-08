@@ -19,7 +19,7 @@ use App\Http\Controllers\Admin\BannerController;
 */
 
 // =========================================================================
-// 1. PUBLIC ROUTES (FRONT-END TIXKITA)
+// 1. PUBLIC ROUTES (FRONT-END Ticketing Hub)
 // =========================================================================
 
 // Halaman Utama: Kalender Acara
@@ -40,8 +40,8 @@ Route::get('/waiting-room/status/{event_id}', [PublicController::class, 'checkWa
 // Halaman Profil Organizer
 Route::get('/organizer/{slug}', [PublicController::class, 'showOrganizerProfile'])->name('public.organizer.profile');
 
-// Halaman Keranjang (rate limited: 120 request/menit per user)
-Route::prefix('cart')->middleware('throttle:120,1')->group(function () {
+// Halaman Keranjang
+Route::prefix('cart')->group(function () {
     Route::get('/data', [App\Http\Controllers\CartController::class, 'getData'])->name('cart.data');
     Route::post('/add', [App\Http\Controllers\CartController::class, 'add'])->name('cart.add');
     Route::post('/update', [App\Http\Controllers\CartController::class, 'update'])->name('cart.update');
@@ -53,7 +53,7 @@ Route::get('/cart', [PublicController::class, 'showCart'])->name('public.cart.sh
 
 // Proses Checkout (rate limited: 15 request/menit per user - mencegah bot)
 Route::get('/checkout', [PublicController::class, 'showCheckoutForm'])->name('public.checkout');
-Route::post('/checkout', [PublicController::class, 'processCheckout'])->middleware('throttle:15,1')->name('public.checkout.process');
+Route::post('/checkout', [PublicController::class, 'processCheckout'])->name('public.checkout.process');
 Route::post('/checkout/check-email', [PublicController::class, 'checkEmail'])->name('public.checkout.check_email');
 
 // Halaman Invoice (Setelah Transaksi Selesai)
@@ -72,7 +72,7 @@ Route::get('/payment/notification', function () {
 });
 
 Route::get('/payment-instructions/{order_id}', [PublicController::class, 'showPaymentInstructions'])->name('public.payment_instructions');
-Route::post('/payment-confirm/{order_id}', [PublicController::class, 'simulatePaymentConfirmation'])->name('public.payment_confirm_simulate');
+
 Route::view('/terms-and-conditions', 'public.terms')->name('public.terms');
 
 // =========================================================================
@@ -107,9 +107,9 @@ Route::get('/home', function () {
 })->name('home');
 
 // =========================================================================
-// 3. SUBDOMAIN: access.tixkita.id (Sponsorship Ticket Access)
+// 3. SUBDOMAIN: access.Ticketing Hub.id (Sponsorship Ticket Access)
 // =========================================================================
-Route::domain('access.tixkita.id')->group(function () {
+Route::domain('access.Ticketing Hub.id')->group(function () {
     Route::get('/{token}', [\App\Http\Controllers\SponsorshipController::class, 'showTicket'])->name('sponsorship.ticket');
 });
 

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $globalSettings['site_title'] ?? 'TixKita' }} - @yield('title', 'Jelajahi Serunya')</title>
+    <title>{{ $globalSettings['site_title'] ?? 'Ticketing Hub' }} - @yield('title', 'Jelajahi Serunya')</title>
     @if(isset($globalSettings['favicon_path']) && $globalSettings['favicon_path'])
         {{-- Favicon untuk browser dan Google Search --}}
         <link rel="icon" type="image/x-icon" href="{{ asset('storage/' . $globalSettings['favicon_path']) }}">
@@ -408,7 +408,7 @@
                     <img src="{{ asset('storage/' . $globalSettings['logo_path']) }}" alt="Logo" style="height: 38px; filter: drop-shadow(0px 1px 2px rgba(0,0,0,0.1));">
                 @else
                     <i class="fas fa-ticket-alt me-2 text-primary"></i>
-                    <span class="text-primary">{{ $globalSettings['site_title'] ?? 'TixKita' }}</span>
+                    <span class="text-primary">{{ $globalSettings['site_title'] ?? 'Ticketing Hub' }}</span>
                 @endif
             </a>
             
@@ -517,7 +517,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-4 mb-4">
-                    <h5 class="fw-bold mb-3">{{ $globalSettings['site_title'] ?? 'TixKita' }}</h5>
+                    <h5 class="fw-bold mb-3">{{ $globalSettings['site_title'] ?? 'Ticketing Hub' }}</h5>
                     <p class="text-muted small">Platform terbaik untuk menemukan pengalaman baru dan travel kit untuk petualanganmu.</p>
                 </div>
                 <div class="col-md-2 mb-4">
@@ -559,7 +559,7 @@
                             <a href="{{ $globalSettings['social_linkedin'] }}" class="text-white" target="_blank"><i class="fab fa-linkedin fa-lg"></i></a>
                         @endif
                     </div>
-                    <p class="small text-muted mt-3 mb-0">&copy; 2025 {{ $globalSettings['site_title'] ?? 'TixKita' }} Project.</p>
+                    <p class="small text-muted mt-3 mb-0">&copy; 2025 {{ $globalSettings['site_title'] ?? 'Ticketing Hub' }} Project.</p>
                     <p class="small text-muted mb-0">Powered by <a href="https://gridkita.my.id" target="_blank" class="text-decoration-none fw-semibold" style="color: var(--primary-color);">GridKita</a></p>
                 </div>
             </div>
@@ -700,7 +700,7 @@
 
         function switchLanguage(lang) {
             // Save to local storage
-            localStorage.setItem('tixkita_lang', lang);
+            localStorage.setItem('Ticketing Hub_lang', lang);
             
             // Update UI label
             const lbl = document.getElementById('current-lang-lbl');
@@ -758,7 +758,7 @@
 
         // Cek bahasa aktif saat halaman dimuat
         document.addEventListener("DOMContentLoaded", function() {
-            let currentLang = localStorage.getItem('tixkita_lang') || 'ID';
+            let currentLang = localStorage.getItem('Ticketing Hub_lang') || 'ID';
             
             const lbl = document.getElementById('current-lang-lbl');
             if (lbl) {

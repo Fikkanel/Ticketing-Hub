@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>E-Ticket TixKita</title>
+    <title>E-Ticket Ticketing Hub</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <style>
         /* Reset & Base Styles */
@@ -80,7 +80,7 @@
     <div class="wrapper">
         <div class="main-container">
             <div class="header">
-                <h1 class="logo">TIXKITA</h1>
+                <h1 class="logo">Ticketing Hub</h1>
                 
                 <p class="order-id">Order ID: #{{ $order->order_id }}</p>
             </div>
@@ -203,7 +203,7 @@
         </div>
 
         <div class="footer">
-            &copy; {{ date('Y') }} TixKita Project.<br>
+            &copy; {{ date('Y') }} Ticketing Hub Project.<br>
             Jl. Ketintang No. 1, Surabaya
         </div>
     </div>

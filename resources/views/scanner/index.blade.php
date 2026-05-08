@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Scanner Tiket - TixKita</title>
+    <title>Scanner Tiket - Ticketing Hub</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     
     {{-- Bootstrap & CSS --}}
@@ -220,7 +220,7 @@
     <header class="scanner-header">
         <div class="scanner-logo">
             <i class="fas fa-qrcode"></i>
-            <span>TixKita Scanner</span>
+            <span>Ticketing Hub Scanner</span>
         </div>
         <a href="{{ route('admin.dashboard') }}" class="back-btn" title="Kembali ke Dashboard">
             <i class="fas fa-arrow-left"></i>

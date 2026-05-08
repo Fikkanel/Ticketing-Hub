@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reset Password - TixKita</title>
+    <title>Reset Password - Ticketing Hub</title>
 </head>
 <body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f4f4; margin: 0; padding: 20px;">
     <div style="max-width: 500px; margin: 0 auto; background-color: #ffffff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
@@ -19,7 +19,7 @@
             </p>
             
             <p style="font-size: 14px; color: #666; line-height: 1.6;">
-                Kami menerima permintaan untuk mereset password akun TixKita Anda. Klik tombol di bawah ini untuk membuat password baru:
+                Kami menerima permintaan untuk mereset password akun Ticketing Hub Anda. Klik tombol di bawah ini untuk membuat password baru:
             </p>
             
             <div style="text-align: center; margin: 30px 0;">
@@ -44,7 +44,7 @@
         <!-- Footer -->
         <div style="background-color: #f8f9fa; padding: 20px; text-align: center;">
             <p style="margin: 0; color: #666; font-size: 12px;">
-                &copy; {{ date('Y') }} TixKita. All rights reserved.
+                &copy; {{ date('Y') }} Ticketing Hub. All rights reserved.
             </p>
         </div>
     </div>

@@ -31,7 +31,7 @@ class CustomerPasswordResetMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Reset Password - TixKita',
+            subject: 'Reset Password - Ticketing Hub',
         );
     }
 

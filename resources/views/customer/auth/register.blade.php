@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'Daftar - TixKita')
+@section('title', 'Daftar - Ticketing Hub')
 
 @section('content')
 <style>
@@ -198,7 +198,7 @@
     
     <div class="auth-terms">
         Dengan mendaftar, Anda menyetujui 
-        <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Syarat & Ketentuan</a> TixKita.
+        <a href="#" data-bs-toggle="modal" data-bs-target="#termsModal">Syarat & Ketentuan</a> Ticketing Hub.
     </div>
     
     <div class="auth-login-link">
@@ -211,14 +211,14 @@
   <div class="modal-dialog modal-dialog-scrollable modal-lg">
     <div class="modal-content border-0 rounded-4 shadow">
       <div class="modal-header border-bottom-0 pb-0">
-        <h5 class="modal-title fw-bold" id="termsModalLabel">Syarat & Ketentuan TixKita</h5>
+        <h5 class="modal-title fw-bold" id="termsModalLabel">Syarat & Ketentuan Ticketing Hub</h5>
         <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body px-4 py-4 text-start" style="color: #4a5568;">
         
         <div class="mb-4">
             <h6 class="fw-bold text-dark">1. Ketentuan Penggunaan</h6>
-            <p class="small mb-0">TixKita ditawarkan kepada Anda dengan syarat Anda menerima syarat, ketentuan, dan pemberitahuan yang terkandung di sini.</p>
+            <p class="small mb-0">Ticketing Hub ditawarkan kepada Anda dengan syarat Anda menerima syarat, ketentuan, dan pemberitahuan yang terkandung di sini.</p>
         </div>
 
         <div class="mb-4">
@@ -230,7 +230,7 @@
             <h6 class="fw-bold text-dark">3. Pembelian dan Refund</h6>
             <ul class="small mb-0 ps-3">
                 <li>Tiket event yang sudah dibeli <strong>tidak dapat dikembalikan</strong>, kecuali jika event dibatalkan oleh penyelenggara.</li>
-                <li>Keputusan pengembalian dana sepenuhnya merupakan hak prerogatif TixKita.</li>
+                <li>Keputusan pengembalian dana sepenuhnya merupakan hak prerogatif Ticketing Hub.</li>
             </ul>
         </div>
 

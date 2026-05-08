@@ -306,8 +306,8 @@
 @endif
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        if (typeof localStorage !== 'undefined' && localStorage.getItem('TixKita_cart')) {
-            localStorage.removeItem('TixKita_cart');
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('Ticketing Hub_cart')) {
+            localStorage.removeItem('Ticketing Hub_cart');
         }
         if (typeof updateCartIcon === 'function') {
             updateCartIcon(); 

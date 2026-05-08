@@ -37,7 +37,7 @@
                 @empty
                     {{-- Fallback Slide jika belum ada banner --}}
                     <div class="carousel-item active hero-banner-item">
-                        <img src="https://via.placeholder.com/1300x500?text=Welcome+to+TixKita" class="d-block w-100 h-100" style="object-fit: cover;">
+                        <img src="https://via.placeholder.com/1300x500?text=Welcome+to+Ticketing Hub" class="d-block w-100 h-100" style="object-fit: cover;">
                     </div>
                 @endforelse
             </div>

@@ -17,7 +17,7 @@ class EnsureGuestSession
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $cookieName = 'tixkita_guest_id';
+        $cookieName = 'Ticketing Hub_guest_id';
         $guestId = $request->cookie($cookieName);
 
         if (!$guestId) {

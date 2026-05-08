@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - TixKita</title>
+    <title>Admin Panel - Ticketing Hub</title>
     
     {{-- Prevent Browser Cache (Important for logout) --}}
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
@@ -298,7 +298,7 @@
         <div id="sidebar-wrapper">
             <div class="sidebar-brand">
                 @if($logoPath)
-                    <img src="{{ asset('storage/' . $logoPath) }}" alt="TixKita" style="height: 40px;">
+                    <img src="{{ asset('storage/' . $logoPath) }}" alt="Ticketing Hub" style="height: 40px;">
                 @else
                     <i class="fas fa-ticket-alt" style="font-size: 1.5rem;"></i>
                 @endif
@@ -485,7 +485,7 @@
             <footer class="bg-white sticky-footer mt-auto py-3 border-top">
                 <div class="container my-auto">
                     <div class="text-center my-auto text-muted small">
-                        <span>Copyright &copy; TixKita Admin {{ date('Y') }}</span>
+                        <span>Copyright &copy; Ticketing Hub Admin {{ date('Y') }}</span>
                     </div>
                 </div>
             </footer>

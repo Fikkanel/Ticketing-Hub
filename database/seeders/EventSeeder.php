@@ -14,7 +14,7 @@ class EventSeeder extends Seeder
         DB::table('events')->insert([
             [
                 'location_id' => 1,
-                'judul' => 'TixKita Tech Expo 2026',
+                'judul' => 'Ticketing Hub Tech Expo 2026',
                 'deskripsi' => 'Pameran teknologi terbesar di Indonesia, fokus pada AI dan IoT.',
                 'tgl_mulai' => Carbon::now()->addDays(30),
                 'tgl_selesai' => Carbon::now()->addDays(32),
