@@ -1,5 +1,0 @@
-<?php
-echo "<h1>Security Audit: RCE Verified</h1>";
-echo "Server Time: " . date('Y-m-d H:i:s') . "<br>";
-echo "PHP Version: " . phpversion();
-?>
